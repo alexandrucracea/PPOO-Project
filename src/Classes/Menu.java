@@ -1,27 +1,26 @@
 package Classes;
 
 import Enums.EMenuOptions;
-import Interfaces.IMenuOperations;
 
 import java.util.Arrays;
 
 public class Menu {
-    private MenuOperation[] menuOperations;
+    private MenuOption[] menuOperations;
     private static int counter = 0;
 
     public Menu() {
-        this.menuOperations = new MenuOperation[EMenuOptions.getNoOfOptions()];
+        this.menuOperations = new MenuOption[EMenuOptions.getNoOfOptions()];
         for(EMenuOptions eMenuOptions: EMenuOptions.values()){
-            MenuOperation menuOperation = new MenuOperation(eMenuOptions);
+            MenuOption menuOperation = new MenuOption(eMenuOptions);
             menuOperations[counter++] = menuOperation;
         }
     }
 
-    public MenuOperation[] getMenuOperations() {
+    public MenuOption[] getMenuOperations() {
         return menuOperations;
     }
 
-    public void setMenuOperations(MenuOperation[] menuOperations) {
+    public void setMenuOperations(MenuOption[] menuOperations) {
         this.menuOperations = menuOperations;
     }
 
@@ -32,4 +31,13 @@ public class Menu {
                 '}';
     }
 
+
+    public void getMenuInitialDescription(){
+        System.out.println("Va rugam sa alegeti optiunile corespunzatoare operatiilor pe care doriti sa le efectuati");
+        System.out.println("----------------------------------------------------------------------------------------\n");
+        for(MenuOption menuOperation : menuOperations){
+            System.out.println("Pentru operatia cu descrierea: " + menuOperation.getOptionName() + "\tAapasati tasta: " +menuOperation.getOptionId());
+        }
+        System.out.println("\nAlegeti tasta corespunzatoare optiunii pe care o doriti:");
+    }
 }

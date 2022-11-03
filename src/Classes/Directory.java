@@ -41,7 +41,10 @@ public class Directory implements IDirectoryOperations {
 
     @Override
     public void populateDirectory(String directoryData) {
-
+        //parse the string received with the following rule
+        //line 1 - directory path
+        //next lines are the files
+            //i have to decide which files to create to pupulate the hashmap
     }
 
     @Override

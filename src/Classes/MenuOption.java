@@ -3,11 +3,11 @@ package Classes;
 import Enums.EMenuOptions;
 import Interfaces.IMenuOperations;
 
-public class MenuOperation implements IMenuOperations {
+public class MenuOption implements IMenuOperations {
     public int optionId;
     public String optionName;
 
-    public MenuOperation(EMenuOptions eMenuOptions) {
+    public MenuOption(EMenuOptions eMenuOptions) {
         this.optionId = eMenuOptions.getId();
         this.optionName = eMenuOptions.getName();
     }
