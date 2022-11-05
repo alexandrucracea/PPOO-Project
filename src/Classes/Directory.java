@@ -9,6 +9,10 @@ import java.util.LinkedList;
 public class Directory implements IDirectoryOperations {
     private String path;
     private HashMap<EFileType, LinkedList<AFile>> directoryFiles;
+    private static int directoryCount = 0;
+
+    public Directory() {
+    }
 
     public Directory(String path, HashMap<EFileType, LinkedList<AFile>> directoryFiles) {
         this.path = path;
@@ -30,6 +34,12 @@ public class Directory implements IDirectoryOperations {
     public void setDirectoryFiles(HashMap<EFileType, LinkedList<AFile>> directoryFiles) {
         this.directoryFiles = directoryFiles;
     }
+
+    public static int countDirectory(){
+        directoryCount++;
+        return directoryCount;
+    }
+
 
     @Override
     public String toString() {

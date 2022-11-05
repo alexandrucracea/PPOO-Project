@@ -1,16 +1,16 @@
 import Classes.*;
 import Enums.EFileExtension;
+import Enums.EFileType;
 import Enums.EMenuOptions;
 
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
 
-        final int  EXTENSION_SIZE = 4;
+        final int  EXTENSION_SIZE = 3;
 
-//        Text file manipulation======================================================================================
+//        Source text file manipulation======================================================================================
         TextFile file = new TextFile("C:\\Facultate\\MASTER EBUS\\AN1\\SEM1\\PPOO\\PROIECT\\src\\test.txt");
 
         if(file.open()){
@@ -18,24 +18,49 @@ public class Main {
             String[] fileContentSplitted = fileContent.split("/");
 
             Directory[] directories = new Directory[fileContentSplitted.length];
-            for(String str: fileContentSplitted){
-                String[] tempString = str.split(" ");
-                LinkedList<AFile> imageFiles = new LinkedList<>();
-                LinkedList<AFile> textFiles = new LinkedList<>();
-                //todo de adaugat separator intre fisierele mici pentru ca trebuie adaugata dimensiunea etc etc in functie de tipul de fisier
-                for(String directoryFile: tempString){
-                    if(directoryFile.length() == EXTENSION_SIZE){
+            for(int i=0; i< fileContentSplitted.length; i++){
+                fileContentSplitted[i] = fileContentSplitted[i].replaceAll("\\s+", "");;
+            }
+            String[] fileContentSplittedNew = Arrays.copyOf(fileContentSplitted, fileContentSplitted.length-1);
+            for(String str: fileContentSplittedNew){
+                String[] allDirectoryInfo = str.split(";");
 
+                LinkedList<AFile> imageFiles = new LinkedList<>();
+                LinkedList<AFile> audioFiles = new LinkedList<>();
+                Directory newDirectory = new Directory();
+
+                //eliminate the whitespaces
+                for(int i=0; i< allDirectoryInfo.length; i++){
+                    allDirectoryInfo[i] = allDirectoryInfo[i].replaceAll("\\s+", "");
+                }
+
+                newDirectory.setPath(allDirectoryInfo[0]);
+                for(int i=1; i< allDirectoryInfo.length; i++){
+                    String[] fileInfo = allDirectoryInfo[i].split(",");
+                    if(fileInfo[0].length() == EXTENSION_SIZE+1){
+                        //todo de adaugat exceptie custom
                     }else{
-                        String extension = directoryFile.substring(directoryFile.length()-EXTENSION_SIZE);
-                        if(extension.toUpperCase().equals(EFileExtension.JPG) || extension.toUpperCase().equals(EFileExtension.PNG)){
-                            String fileName = directoryFile.substring(0,directoryFile.length()-EXTENSION_SIZE);
-                            AFile imageFile = new ImageFile(fileName,EFileExtension.getExtension(extension),0,100,400);
+                        String extension = fileInfo[0].substring(allDirectoryInfo[0].length()-EXTENSION_SIZE);
+                        if(extension.equalsIgnoreCase(EFileExtension.JPG.name()) || extension.equalsIgnoreCase(EFileExtension.PNG.name())) {
+                            String fileName = fileInfo[0].substring(0, fileInfo[0].length() - EXTENSION_SIZE - 1);
+                            EFileExtension.getExtension(extension);
+                            AFile imageFile = new ImageFile(fileName, EFileExtension.getExtension(extension), Integer.parseInt(fileInfo[1]), Integer.parseInt(fileInfo[2]), Integer.parseInt(fileInfo[3]));
+                            imageFiles.add(imageFile);
                         }
+                        if(extension.equalsIgnoreCase(EFileExtension.WAV.name()) || extension.equalsIgnoreCase(EFileExtension.MP3.name())) {
+                            String fileName = fileInfo[0].substring(0, fileInfo[0].length() - EXTENSION_SIZE - 1);
+                            EFileExtension.getExtension(extension);
+                            AFile audioFile = new AudioFile(fileName, EFileExtension.getExtension(extension), Integer.parseInt(fileInfo[1]), Integer.parseInt(fileInfo[2]));
+                            audioFiles.add(audioFile);
+                        }
+//
                     }
                 }
-//                Directory directory = new Directory(tempString[0])
-
+                HashMap<EFileType,LinkedList<AFile>> directoryContent = new HashMap<>();
+                directoryContent.put(EFileType.IMAGE,imageFiles);
+                directoryContent.put(EFileType.AUDIO,audioFiles);
+                newDirectory.setDirectoryFiles(directoryContent);
+                directories[Directory.countDirectory()] = newDirectory;
             }
             //TODO salvare date citite
             //TODO realizarea de operatii CRUD cu salvare prin scriere intr-un fisier text de iesire
