@@ -30,6 +30,10 @@ public abstract class AFile {
         this.fileName = fileName;
     }
 
+    public EFileExtension getFileExtension() {
+        return fileExtension;
+    }
+
     public void setFileExtension(EFileExtension fileExtension) {
         this.fileExtension = fileExtension;
     }

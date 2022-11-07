@@ -3,7 +3,7 @@ ceva1.jpg,12,100,200;
 ceva2.mp3,12,60;
 ceva3.wav,12,30
 /
-Director1;
+Director2;
 ceva1.jpg,12,100,200;
 ceva2.mp3,12,60;
 ceva3.wav,12,30
