@@ -30,14 +30,14 @@ public class Menu {
                 "menuOperations=" + Arrays.toString(menuOperations) +
                 '}';
     }
-
-
     public void getMenuInitialDescription(){
         System.out.println("Va rugam sa alegeti optiunile corespunzatoare operatiilor pe care doriti sa le efectuati");
-        System.out.println("----------------------------------------------------------------------------------------\n");
+        System.out.println("----------------------------------------------------------------------------------------");
+        System.out.format("%-70s %s", "Descriere","Tasta\n");
         for(MenuOption menuOperation : menuOperations){
-            System.out.println("Pentru operatia cu descrierea: " + menuOperation.getOptionName() + "\tAapasati tasta: " +menuOperation.getOptionId());
+            System.out.format("%-72s %s",menuOperation.getOptionName(),menuOperation.getOptionId() + "\n");
         }
-        System.out.println("\nAlegeti tasta corespunzatoare optiunii pe care o doriti:");
+        System.out.println("----------------------------------------------------------------------------------------");
+        System.out.println("Alegeti tasta corespunzatoare optiunii pe care o doriti:");
     }
 }

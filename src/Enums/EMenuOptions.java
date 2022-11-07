@@ -1,11 +1,14 @@
 package Enums;
 
 public enum EMenuOptions {
-    SAVE_DATA(1,"Save data to text file"),
-    CREATE_DIRECTORY(2,"Create new directory in txt source file"),
-    RESTORE_DATA(3, "Restore data from the txt source file"),
-    DELETE_EXISTING_DIRECTORY(4,"Delete an existing directory by its name"),
-    CLOSE_APP(5,"Close Application");
+    SAVE_DATA(1,"SALVATI DATELE CURENTE"),
+    CREATE_DIRECTORY(2,"CREATI UN NOU DIRECTOR"),
+    DELETE_EXISTING_DIRECTORY(3,"STERGETI UN DIRECTOR"),
+    UPDATE_EXISTING_DIRECTORY(4,"ACTUALIZATI UN DIRECTOR"),
+    CREATE_FILE(5, "CREATI UN FISIER"),
+    DELETE_FILE(6, "STERGETI UN FISIER"),
+    UPDATE_FILE(7, "ACTUALIZATI UN FISIER"),
+    CLOSE_APP(8,"INCHIDETI APLICATIA");
 
     private int id;
     private String name;

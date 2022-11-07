@@ -79,7 +79,7 @@ public class TextFile {
                         LinkedList<AFile> files = directoryContent.getValue();
                         for(AFile file: files){
                             AudioFile audioFile = (AudioFile) file;
-                            stringBuilder.append(audioFile.getFileName() + "." + audioFile.getFileExtension().name()+"," + audioFile.getFileSize() + ",");
+                            stringBuilder.append(audioFile.getFileName() + "." + audioFile.getFileExtension().name().toLowerCase()+"," + audioFile.getFileSize() + ",");
                             stringBuilder.append(audioFile.getDuration());
                             stringBuilder.append(";\n");
                         }

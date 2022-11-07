@@ -1,6 +1,9 @@
 package Interfaces;
 
 import Classes.AFile;
+import Classes.Directory;
+
+import java.util.Scanner;
 
 public interface IDirectoryOperations {
     public void populateDirectory(String directoryData);

@@ -7,6 +7,7 @@ import Interfaces.IDirectoryOperations;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 public class Directory implements IDirectoryOperations {
     private String path;
@@ -14,6 +15,11 @@ public class Directory implements IDirectoryOperations {
     private static int directoryCount = 0;
 
     public Directory() {
+    }
+
+    public Directory(String path) {
+        this.path = path;
+        this.directoryFiles = new HashMap<>();
     }
 
     public Directory(String path, HashMap<EFileType, LinkedList<AFile>> directoryFiles) {
@@ -42,7 +48,9 @@ public class Directory implements IDirectoryOperations {
         return directoryCount;
     }
 
-
+    public static int getDirectoryCount() {
+        return directoryCount;
+    }
 
     @Override
     public String toString() {
@@ -55,11 +63,13 @@ public class Directory implements IDirectoryOperations {
     public static Directory[] getAllDirectoryData(String fileContent, int EXTENSION_SIZE) {
         String[] fileContentSplitted = fileContent.split("/");
 
-        Directory[] directories = new Directory[fileContentSplitted.length];
         for (int i = 0; i < fileContentSplitted.length; i++) {
             fileContentSplitted[i] = fileContentSplitted[i].replaceAll("\\s+", "");
         }
+
         String[] fileContentSplittedNew = Arrays.copyOf(fileContentSplitted, fileContentSplitted.length - 1);
+        Directory[] directories = new Directory[fileContentSplittedNew.length]; //fileContentSplittedNew.length
+
         for (String str : fileContentSplittedNew) {
             String[] allDirectoryInfo = str.split(";");
 
@@ -98,10 +108,23 @@ public class Directory implements IDirectoryOperations {
             directoryContent.put(EFileType.IMAGE, imageFiles);
             directoryContent.put(EFileType.AUDIO, audioFiles);
             newDirectory.setDirectoryFiles(directoryContent);
-            directories[Directory.countDirectory()] = newDirectory;
+            directories[Directory.directoryCount] = newDirectory;
+            Directory.countDirectory();
 
         }
         return directories;
+    }
+
+    public static Directory createDirectory(Scanner scanner) {
+        System.out.println("Va rugam introduceti calea/denumirea directorului pe care doriti sa il creati");
+        String directoryPath = scanner.next();
+        if(directoryPath!=null){
+            Directory newDirectory = new Directory(directoryPath);
+            return newDirectory;
+        }
+        System.out.println("Directorul nu a putut fi creat");
+        //todo de adaugat exceptie custom
+        return null;
     }
 
     @Override
