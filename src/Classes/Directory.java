@@ -4,10 +4,7 @@ import Enums.EFileExtension;
 import Enums.EFileType;
 import Interfaces.IDirectoryOperations;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Directory implements IDirectoryOperations {
     private String path;
@@ -125,6 +122,20 @@ public class Directory implements IDirectoryOperations {
         System.out.println("Directorul nu a putut fi creat");
         //todo de adaugat exceptie custom
         return null;
+    }
+
+    public static Directory[] DeleteDirectory(String path, Directory[] directories){
+        //get index in directories array
+        int indexToDelete = 0;
+        for(int i=0; i<directories.length;i++){
+            if(directories[i].getPath().equalsIgnoreCase(path)){
+                indexToDelete = i;
+            }
+        }
+        ArrayList<Directory> directoryArrayList = new ArrayList<>(Arrays.asList(directories));
+        directoryArrayList.remove(indexToDelete);
+        Directory[] directoriesToReturn = directoryArrayList.toArray(new Directory[directories.length-1]);
+        return directoriesToReturn;
     }
 
     @Override
