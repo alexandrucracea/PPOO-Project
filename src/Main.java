@@ -43,21 +43,24 @@ public class Main {
                             menu.getMenuInitialDescription();
                             break;
                         case 2:
-                            Directory newDirectory = Directory.createDirectory(scanner);
-                            if(newDirectory !=null){
-                                Directory[] tempDirectories = new Directory[directories.length+1];
-                                for(int i=0; i<tempDirectories.length-1; i++){
-                                    tempDirectories[i] = directories[i];
+                            do{
+                                Directory newDirectory = Directory.createDirectory(scanner);
+                                if(newDirectory !=null){
+                                    Directory[] tempDirectories = new Directory[directories.length+1];
+                                    for(int i=0; i<tempDirectories.length-1; i++){
+                                        tempDirectories[i] = directories[i];
+                                    }
+                                    tempDirectories[tempDirectories.length-1] = newDirectory;
+                                    directories = null;
+                                    directories = tempDirectories.clone();
+                                    Directory.countDirectory();
+                                    System.out.println("Directorul a fost creat cu succes");
                                 }
-                                tempDirectories[tempDirectories.length-1] = newDirectory;
-                                directories = null;
-                                directories = tempDirectories.clone();
-                                Directory.countDirectory();
-                                System.out.println("Directorul a fost creat cu succes");
-                                menu.getMenuInitialDescription();
-                                break;
-                            }
-                            //todo de adaugat posibil caz de else
+                                System.out.println("Daca doriti sa reluati operatia, scrieti DA, altfel scrieti NU");
+                                //todo optiune pentru populat directorul recent creat
+                            }while (!scanner.next().equalsIgnoreCase("NU"));
+                            menu.getMenuInitialDescription();
+                            break;
                         case 3:
                             System.out.println("INTRODUCETI DENUMIREA DIRECTORULUI PE CARE DORITI SA IL STERGETI");
                             String directoryToFind = scanner.next();
@@ -68,6 +71,8 @@ public class Main {
                             }else{
                                 System.out.println("Acest director nu exista. Doriti sa continuati?");
                             }
+                        case 5:
+                            //todo de tratat acest caz
                         default:
                             System.out.println("OPTIUNEA ALEASA NU EXISTA");
                             //todo de adaugat intrebare -> doriti sa continuati (Da sau NU)

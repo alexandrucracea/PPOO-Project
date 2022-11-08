@@ -4,6 +4,7 @@ import Enums.EFileExtension;
 import Enums.EFileType;
 import Interfaces.IDirectoryOperations;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Directory implements IDirectoryOperations {
@@ -144,8 +145,43 @@ public class Directory implements IDirectoryOperations {
     }
 
     @Override
-    public void createFile(AFile file) {
-
+    public AFile createFile(AFile file, Scanner scanner) {
+        System.out.println("Ce fel de fisier doriti sa creati?");
+        System.out.println("Pentru fisier audio introduceti tasta 1. Pentru fisier imagine introduceti tasta 2");
+        if(scanner.nextInt() == 1){
+            System.out.println("Introduceti denumirea fisierului pe care doriti sa il creati");
+            String fileName = scanner.next();
+            System.out.println("Introduceti extensia noului fisier: jpg sau png.");
+            String extension = scanner.next();
+            System.out.println("Introduceti dimensiunea noului fisier");
+            int dimension = scanner.nextInt();
+            System.out.println("Introduceti dimensiunile fisierului imagine:");
+            System.out.println("WIDTH");
+            int width = scanner.nextInt();
+            System.out.println("HEIGHT");
+            int height = scanner.nextInt();
+            if(fileName!= null && extension!=null && dimension != 0 && width != 0 && height != 0 ){
+                ImageFile imageFile = new ImageFile(fileName,EFileExtension.getExtension(extension),dimension,height,width);
+                return imageFile;
+            }//todo ce se intampla pe else
+        }else if(scanner.nextInt() == 2){
+            System.out.println("Introduceti denumirea fisierului pe care doriti sa il creati");
+            String fileName = scanner.next();
+            System.out.println("Introduceti extensia noului fisier: wav sau mp3.");
+            String extension = scanner.next();
+            System.out.println("Introduceti dimensiunea noului fisier");
+            int dimension = scanner.nextInt();
+            System.out.println("Introduceti durata noului fisier");
+            int duration = scanner.nextInt();
+            if(fileName!= null && extension!=null && dimension != 0 && duration !=0){
+                AudioFile audioFile = new AudioFile(fileName,EFileExtension.getExtension(extension),dimension,duration);
+                return audioFile;
+            }//todo ce se intampla pe else si aici
+        }else{
+            System.out.println("Optiunea introdusa nu este corecta");
+            //todo de tratat acest caz de exceptie -> eventual o revenire sau o intrebare daca se doreste continuarea
+        }
+        return null;
     }
 
     @Override
