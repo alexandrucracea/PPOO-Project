@@ -35,10 +35,10 @@ public class ImageFile extends AFile{
 
     @Override
     public String toString() {
-        return "ImageFile:" +
+        return "ImageFile{" +
                 "height=" + height +
                 ", width=" + width +
-                ' ';
+                "} " + super.toString();
     }
 
     //todo de adaugat in toString si constanta

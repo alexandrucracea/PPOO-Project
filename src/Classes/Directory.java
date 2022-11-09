@@ -139,6 +139,22 @@ public class Directory implements IDirectoryOperations {
         return directoriesToReturn;
     }
 
+    public static void updateDirectoryName(Directory[] directories, String directoryName, String directoryNewName){
+
+        for(Directory directory : directories){
+            if(directory.getPath().equalsIgnoreCase(directoryName)){
+                directory.setPath(directoryNewName);
+            }
+        }
+    }
+
+    public static void showAllDirectories(Directory[] directories){
+        for(Directory directory : directories){
+            System.out.println("Directory " + directory.getPath() + " data");
+            directory.getDirectoryFiles().forEach((key, value) -> System.out.println(key + " files: " + value));
+        }
+    }
+
     @Override
     public void populateDirectory(String directoryData) {
 

@@ -97,4 +97,14 @@ public class TextFile {
             }
         }
     }
+
+    public boolean DeleteFile(){
+       if(myFile.delete()){
+           System.out.println("Fisierul a fost sters cu succes");
+           return true;
+       }else{
+           System.out.println("Fisierul nu a putut fi sters");
+            return false;
+       }
+    }
 }

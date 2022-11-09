@@ -1,10 +1,12 @@
 Director1;
-ceva1.jpg,12,100,200;
 ceva2.mp3,12,60;
-ceva3.wav,12,30
+ceva3.wav,12,30;
+ceva1.JPG,12,100,200;
 /
 Director2;
-ceva1.jpg,12,100,200;
 ceva2.mp3,12,60;
-ceva3.wav,12,30
+ceva3.wav,12,30;
+ceva1.JPG,12,100,200;
+/
+director3;
 /

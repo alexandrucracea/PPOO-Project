@@ -1,5 +1,6 @@
 package Classes;
 
+import Enums.EFileOptions;
 import Enums.EMenuOptions;
 import Interfaces.IMenuOperations;
 
@@ -10,6 +11,10 @@ public class MenuOption implements IMenuOperations {
     public MenuOption(EMenuOptions eMenuOptions) {
         this.optionId = eMenuOptions.getId();
         this.optionName = eMenuOptions.getName();
+    }
+    public MenuOption(EFileOptions eFileOptions) {
+        this.optionId = eFileOptions.getId();
+        this.optionName = eFileOptions.getName();
     }
 
     public int getOptionId() {

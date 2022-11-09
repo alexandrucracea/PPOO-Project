@@ -26,6 +26,6 @@ public class AudioFile extends AFile{
     public String toString() {
         return "AudioFile{" +
                 "duration=" + duration +
-                ' ';
+                "} " + super.toString();
     }
 }
