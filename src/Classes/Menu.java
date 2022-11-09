@@ -4,6 +4,7 @@ import Enums.EFileOptions;
 import Enums.EMenuOptions;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Menu {
     private MenuOption[] menuOperations;
@@ -58,5 +59,18 @@ public class Menu {
         }
         System.out.println("----------------------------------------------------------------------------------------");
         System.out.println("Alegeti tasta corespunzatoare optiunii pe care o doriti:");
+    }
+    public boolean getRerenderingMenuQuestion(String inputValue, Scanner scanner){
+        System.out.println("\nDaca doriti sa continuati scrieti DA. Pentru a inchide aplicatia scrieti NU");
+        inputValue = scanner.next();
+        boolean shouldContinue = true;
+        if (inputValue.equalsIgnoreCase("DA")) {
+            this.getMenuInitialDescription();
+        } else {
+            if (inputValue.equalsIgnoreCase("NU")) {
+               shouldContinue = false;
+            }
+        }
+        return shouldContinue;
     }
 }

@@ -1,6 +1,9 @@
 import Classes.*;
 import CustomExceptions.InvalidCommandException;
+import CustomExceptions.InvalidDirectoryName;
+import CustomExceptions.InvalidDirectorySizeException;
 import Enums.EFileExtension;
+import Enums.EFileOptions;
 import Enums.EFileType;
 import Enums.EMenuOptions;
 
@@ -28,7 +31,7 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
 
             int closingId = 0;
-            String inputValue;
+            String inputValue = "";
             int inputOperationTypeValue = -1;
 
             for (MenuOption menuOption : menu.getMenuOperations()) {
@@ -75,14 +78,22 @@ public class Main {
                         case 3:
                             System.out.println("INTRODUCETI DENUMIREA DIRECTORULUI PE CARE DORITI SA IL STERGETI");
                             String directoryToFind = scanner.next();
+                            try {
+                                if (directories.length == 0)
+                                    throw new InvalidDirectorySizeException("Nu exista niciun director pentru a putea fi efectuata stergerea");
+                            } catch (InvalidDirectorySizeException ex) {
+                                System.err.println(ex);
+                            shouldContinue = menu.getRerenderingMenuQuestion(inputValue,scanner);
+                            }
+                            //todo de adaugat asta in loc de metoda de exista
                             if (Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))) {
                                 directories = Directory.DeleteDirectory(directoryToFind, directories);
                                 System.out.println("Eliminarea a fost finalizata");
-                                break;
-                                //todo de adaugat -> doriti sa continuati + caz cand nu mai este nimic de sters
                             } else {
                                 System.out.println("Acest director nu exista. Doriti sa continuati?");
                             }
+                            shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
+                            break;
 
                         case 4:
                             System.out.println("Ce operatie doriti sa realizat in acest director?");
@@ -90,61 +101,55 @@ public class Main {
                             System.out.println("Pentru operatii de gestiune a fisierelor dintr-un anumit director apasati 2");
                             inputOperationTypeValue = scanner.nextInt();
 
-                            if(inputOperationTypeValue == 1){
+                            if (inputOperationTypeValue == 1) {
                                 System.out.println("INTRODUCETI DENUMIREA DIRECTORULUI PE CARE DORITI SA IL REDENUMITI");
                                 String directoryName = scanner.next();
                                 System.out.println("INTRODUCETI NOUA DENUMIRE A DIRECTORULUI");
                                 String directoryNewName = scanner.next();
-                                Directory.updateDirectoryName(directories,directoryName,directoryNewName);
-                                System.out.println("Operatia a fost finalizata cu succes");
-                                System.out.println("\nDaca doriti sa continuati scrieti DA. Pentru a inchide aplicatia scrieti NU");
-                                inputValue = scanner.next();
-                                if (inputValue.equalsIgnoreCase("DA")) {
-                                    menu.getMenuInitialDescription();
-                                    break;
-                                } else {
-                                    if (inputValue.equalsIgnoreCase("NU")) {
-                                        shouldContinue = false;
-                                        break;
-                                    }
+                                try {
+                                    Directory.updateDirectoryName(directories, directoryName, directoryNewName);
+                                } catch (InvalidDirectoryName e) {
+                                    System.err.println(e);
                                 }
-                            }else{
-                                if(inputOperationTypeValue == 2){
+//                                Thread.sleep(500);
+                                shouldContinue = menu.getRerenderingMenuQuestion(inputValue,scanner);
+                            } else {
+                                if (inputOperationTypeValue == 2) {
                                     menu.getMenuFileOperations();
+                                    int inputFileOperationValue = scanner.nextInt();
+                                    if(inputFileOperationValue == EFileOptions.CREATE_FILE.getId()){
+                                        System.out.println("Care este numele directorului in care doriti sa creati fisierul?");
+                                        directoryToFind = scanner.next();
+                                        if(Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))){
+                                            Optional<Directory> directoryToCheck = Arrays.stream(directories).filter(x -> x.getPath().equalsIgnoreCase(directoryToFind))
+                                                    .findFirst();
+                                            if(directoryToCheck.isPresent()){
+                                                Directory directory = directoryToCheck.get();
+                                                AFile fileToAdd = directory.createFile(scanner);
+                                                if(String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.JPG.name()) ||
+                                                        String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.PNG.name())){
+                                                   //todo cazul daca exista deja in fisier date sau daca nu
+                                                }
+                                            }
+
+                                        }else{
+                                            //todo aici tratare de exceptie
+                                        }
+                                    }
                                     break;
                                 }
                             }
                         case 5:
                             Directory.showAllDirectories(directories);
-                            System.out.println("Daca doriti sa continuati scrieti DA. Pentru a inchide aplicatia scrieti NU");
-                            inputValue = scanner.next();
-                            if (inputValue.equalsIgnoreCase("DA")) {
-                                menu.getMenuInitialDescription();
-                                break;
-                            } else {
-                                if (inputValue.equalsIgnoreCase("NU")) {
-                                    shouldContinue = false;
-                                    break;
-                                }
-                            }
+                            shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
+                            break;
 
                         default:
                             try {
                                 throw new InvalidCommandException("OPTIUNEA ALEASA NU EXISTA");
                             } catch (InvalidCommandException ex) {
                                 System.err.println(ex);
-                                System.out.println("\nDaca doriti sa continuati scrieti DA. Pentru a inchide aplicatia scrieti NU");
-
-                                inputValue = scanner.next();
-                                if (inputValue.equalsIgnoreCase("DA")) {
-                                    menu.getMenuInitialDescription();
-                                    break;
-                                } else {
-                                    if (inputValue.equalsIgnoreCase("NU")) {
-                                        shouldContinue = false;
-                                        break;
-                                    }
-                                }
+                                shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                             }
                     }
                 } catch (InterruptedException e) {
@@ -156,7 +161,7 @@ public class Main {
                 optionId = scanner.nextInt();
             }
 
-            if(file.DeleteFile()){
+            if (file.DeleteFile()) {
                 file.writeToFile(directories, appFilePath);
                 System.out.println("Aplicatia a fost inchisa cu succes, iar datele au fost salvate");
             }

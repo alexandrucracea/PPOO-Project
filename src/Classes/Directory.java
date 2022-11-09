@@ -1,5 +1,6 @@
 package Classes;
 
+import CustomExceptions.InvalidDirectoryName;
 import Enums.EFileExtension;
 import Enums.EFileType;
 import Interfaces.IDirectoryOperations;
@@ -139,13 +140,26 @@ public class Directory implements IDirectoryOperations {
         return directoriesToReturn;
     }
 
-    public static void updateDirectoryName(Directory[] directories, String directoryName, String directoryNewName){
-
-        for(Directory directory : directories){
-            if(directory.getPath().equalsIgnoreCase(directoryName)){
-                directory.setPath(directoryNewName);
+    public static void updateDirectoryName(Directory[] directories, String directoryName, String directoryNewName) throws InvalidDirectoryName {
+        if(checkIfDirectoryExists(directoryName,directories)){
+            for(Directory directory : directories){
+                if(directory.getPath().equalsIgnoreCase(directoryName)){
+                    directory.setPath(directoryNewName);
+                }
             }
+        }else{
+            throw new InvalidDirectoryName("Directorul cautat nu exista");
         }
+
+    }
+
+    public static boolean checkIfDirectoryExists(String directoryName, Directory[] directories){
+        boolean exists = false;
+        for(Directory directory: directories){
+            if(directory.getPath().equalsIgnoreCase(directoryName))
+                exists = true;
+        }
+        return exists;
     }
 
     public static void showAllDirectories(Directory[] directories){
@@ -155,13 +169,15 @@ public class Directory implements IDirectoryOperations {
         }
     }
 
+
     @Override
     public void populateDirectory(String directoryData) {
 
     }
 
     @Override
-    public AFile createFile(AFile file, Scanner scanner) {
+    public AFile createFile( Scanner scanner) {
+        AFile file;
         System.out.println("Ce fel de fisier doriti sa creati?");
         System.out.println("Pentru fisier audio introduceti tasta 1. Pentru fisier imagine introduceti tasta 2");
         if(scanner.nextInt() == 1){
