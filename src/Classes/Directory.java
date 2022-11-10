@@ -42,7 +42,7 @@ public class Directory implements IDirectoryOperations {
         this.directoryFiles = directoryFiles;
     }
 
-    public static int countDirectory(){
+    public static int countDirectory() {
         directoryCount++;
         return directoryCount;
     }
@@ -53,10 +53,7 @@ public class Directory implements IDirectoryOperations {
 
     @Override
     public String toString() {
-        return "Directory{" +
-                "path='" + path + '\'' +
-                ", directoryFiles=" + directoryFiles +
-                '}';
+        return "Directory{" + "path='" + path + '\'' + ", directoryFiles=" + directoryFiles + '}';
     }
 
     public static Directory[] getAllDirectoryData(String fileContent, int EXTENSION_SIZE) {
@@ -117,7 +114,7 @@ public class Directory implements IDirectoryOperations {
     public static Directory createDirectory(Scanner scanner) {
         System.out.println("Va rugam introduceti calea/denumirea directorului pe care doriti sa il creati");
         String directoryPath = scanner.next();
-        if(directoryPath!=null){
+        if (directoryPath != null) {
             Directory newDirectory = new Directory(directoryPath);
             return newDirectory;
         }
@@ -126,176 +123,172 @@ public class Directory implements IDirectoryOperations {
         return null;
     }
 
-    public static Directory[] DeleteDirectory(String path, Directory[] directories){
+    public static Directory[] DeleteDirectory(String path, Directory[] directories) {
         //get index in directories array
         int indexToDelete = 0;
-        for(int i=0; i<directories.length;i++){
-            if(directories[i].getPath().equalsIgnoreCase(path)){
+        for (int i = 0; i < directories.length; i++) {
+            if (directories[i].getPath().equalsIgnoreCase(path)) {
                 indexToDelete = i;
             }
         }
         ArrayList<Directory> directoryArrayList = new ArrayList<>(Arrays.asList(directories));
         directoryArrayList.remove(indexToDelete);
-        Directory[] directoriesToReturn = directoryArrayList.toArray(new Directory[directories.length-1]);
+        Directory[] directoriesToReturn = directoryArrayList.toArray(new Directory[directories.length - 1]);
         return directoriesToReturn;
     }
 
     public static void updateDirectoryName(Directory[] directories, String directoryName, String directoryNewName) throws InvalidDirectoryName {
-        if(checkIfDirectoryExists(directoryName,directories)){
-            for(Directory directory : directories){
-                if(directory.getPath().equalsIgnoreCase(directoryName)){
+        if (checkIfDirectoryExists(directoryName, directories)) {
+            for (Directory directory : directories) {
+                if (directory.getPath().equalsIgnoreCase(directoryName)) {
                     directory.setPath(directoryNewName);
                 }
             }
-        }else{
+        } else {
             throw new InvalidDirectoryName("Directorul cautat nu exista");
         }
 
     }
 
-    public static boolean checkIfDirectoryExists(String directoryName, Directory[] directories){
+    public static boolean checkIfDirectoryExists(String directoryName, Directory[] directories) {
         boolean exists = false;
-        for(Directory directory: directories){
-            if(directory.getPath().equalsIgnoreCase(directoryName))
-                exists = true;
+        for (Directory directory : directories) {
+            if (directory.getPath().equalsIgnoreCase(directoryName)) exists = true;
         }
         return exists;
     }
 
-    public static void showAllDirectories(Directory[] directories){
-        for(Directory directory : directories){
+    public static void showAllDirectories(Directory[] directories) {
+        for (Directory directory : directories) {
             System.out.println("Directory " + directory.getPath() + " data");
             directory.getDirectoryFiles().forEach((key, value) -> System.out.println(key + " files: " + value));
         }
     }
 
     public static void populateDirectory(Scanner scanner, Directory[] directories) {
-        if(directories!=null){
+        if (directories != null) {
             System.out.println("Care este numele directorului in care doriti sa creati fisierul?");
             String directoryToFind = scanner.next();
             if (Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))) {
-                Optional<Directory> directoryToCheck = Arrays.stream(directories).filter(x -> x.getPath().equalsIgnoreCase(directoryToFind))
-                        .findFirst();
+                Optional<Directory> directoryToCheck = Arrays.stream(directories).filter(x -> x.getPath().equalsIgnoreCase(directoryToFind)).findFirst();
                 Directory directory = directoryToCheck.get();
                 boolean loopCheck = false;
-                do{
+                do {
                     AFile fileToAdd = directory.createFile(scanner);
-                    if (String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.JPG.name()) ||
-                            String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.PNG.name())) {
+                    if (String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.JPG.name()) || String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.PNG.name())) {
                         directory.getDirectoryFiles().get(EFileType.IMAGE).add(fileToAdd);
                     }
-                    if (String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.MP3.name()) ||
-                            String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.WAV.name())) {
-                        directory.getDirectoryFiles().get(EFileType.IMAGE).add(fileToAdd);
+                    if (String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.MP3.name()) || String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.WAV.name())) {
+                        directory.getDirectoryFiles().get(EFileType.AUDIO).add(fileToAdd);
                     }
                     System.out.println("Doriti sa mai adaugati un fisier in director? (DA sau NU)");
                     String choice = scanner.next();
-                    if(choice.equalsIgnoreCase("DA")){
+                    if (choice.equalsIgnoreCase("DA")) {
                         loopCheck = true;
-                    }else if(choice.equalsIgnoreCase("NU")){
+                    } else if (choice.equalsIgnoreCase("NU")) {
                         loopCheck = false;
                     }
-                }while(loopCheck );
+                } while (loopCheck);
 
-            }else{
-                //todo de creat exceptie ca nu exista directorul
-            }
-        }
-       //todo ce se intampla daca nu avem nimic in directories
-    }
-
-    public static void deleteDirectoryContent(Scanner scanner, Directory[] directories){
-        if(directories!=null){
-            System.out.println("Care este numele directorului in care doriti sa eliminati fisiere?");
-            String directoryToFind = scanner.next();
-            if (Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))) {
-                Optional<Directory> directoryToCheck = Arrays.stream(directories).filter(x -> x.getPath().equalsIgnoreCase(directoryToFind))
-                        .findFirst();
-                Directory directory = directoryToCheck.get();
-                boolean loopCheck = false;
-                do{
-                    AFile fileToDelete = directory.findFile(scanner,directory);
-                    if(fileToDelete.getFileExtension() == EFileExtension.JPG || fileToDelete.getFileExtension() == EFileExtension.PNG){
-                        directory.getDirectoryFiles().get(EFileType.IMAGE).remove(fileToDelete);
-                    }
-                    if(fileToDelete.getFileExtension() == EFileExtension.WAV || fileToDelete.getFileExtension() == EFileExtension.MP3){
-                        directory.getDirectoryFiles().get(EFileType.AUDIO).remove(fileToDelete);
-                    }
-                    //todo ce se intampla cand nu mai avem fisiere de sters
-                    System.out.println("Fisierul a fost eliminat");
-                    System.out.println("Doriti sa mai stergeti un fisier din director? (DA sau NU)");
-                    String choice = scanner.next();
-                    if(choice.equalsIgnoreCase("DA")){
-                        loopCheck = true;
-                    }else if(choice.equalsIgnoreCase("NU")){
-                        loopCheck = false;
-                    }
-                }while(loopCheck);
-
-            }else{
+            } else {
                 //todo de creat exceptie ca nu exista directorul
             }
         }
         //todo ce se intampla daca nu avem nimic in directories
     }
 
-    public static void updateDirectoryContent(Scanner scanner, Directory[] directories, Menu menu){
-        if(directories!=null){
+    public static void deleteDirectoryContent(Scanner scanner, Directory[] directories) {
+        if (directories != null) {
+            System.out.println("Care este numele directorului in care doriti sa eliminati fisiere?");
+            String directoryToFind = scanner.next();
+            if (Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))) {
+                Optional<Directory> directoryToCheck = Arrays.stream(directories).filter(x -> x.getPath().equalsIgnoreCase(directoryToFind)).findFirst();
+                Directory directory = directoryToCheck.get();
+                boolean loopCheck = false;
+                do {
+                    AFile fileToDelete = directory.findFile(scanner, directory);
+                    if (fileToDelete != null) {
+                        if (fileToDelete.getFileExtension() == EFileExtension.JPG || fileToDelete.getFileExtension() == EFileExtension.PNG) {
+                            directory.getDirectoryFiles().get(EFileType.IMAGE).remove(fileToDelete);
+                        }
+                        if (fileToDelete.getFileExtension() == EFileExtension.WAV || fileToDelete.getFileExtension() == EFileExtension.MP3) {
+                            directory.getDirectoryFiles().get(EFileType.AUDIO).remove(fileToDelete);
+                        }
+                        System.out.println("Fisierul a fost eliminat");
+                        System.out.println("Doriti sa mai stergeti un fisier din director? (DA sau NU)");
+                        String choice = scanner.next();
+                        if (choice.equalsIgnoreCase("DA")) {
+                            loopCheck = true;
+                        } else if (choice.equalsIgnoreCase("NU")) {
+                            loopCheck = false;
+                        }
+                    }
+
+                } while (loopCheck);
+
+            } else {
+                //todo de creat exceptie ca nu exista directorul
+            }
+        }
+        //todo ce se intampla daca nu avem nimic in directories
+    }
+
+    public static void updateDirectoryContent(Scanner scanner, Directory[] directories, Menu menu) {
+        if (directories != null) {
             System.out.println("Care este numele directorului in care doriti sa modificati fisiere?");
             String directoryToFind = scanner.next();
             if (Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))) {
-                Optional<Directory> directoryToCheck = Arrays.stream(directories).filter(x -> x.getPath().equalsIgnoreCase(directoryToFind))
-                        .findFirst();
+                Optional<Directory> directoryToCheck = Arrays.stream(directories).filter(x -> x.getPath().equalsIgnoreCase(directoryToFind)).findFirst();
                 Directory directory = directoryToCheck.get();
                 boolean loopCheck = false;
-                do{
-                    AFile fileToUpdate = directory.findFile(scanner,directory);
-                    if(fileToUpdate.getFileExtension() == EFileExtension.JPG || fileToUpdate.getFileExtension() == EFileExtension.PNG){
+                do {
+                    AFile fileToUpdate = directory.findFile(scanner, directory);
+                    if (fileToUpdate.getFileExtension() == EFileExtension.JPG || fileToUpdate.getFileExtension() == EFileExtension.PNG) {
                         int index = directory.getDirectoryFiles().get(EFileType.IMAGE).indexOf(fileToUpdate);
-                        AFile updatedFile = directory.updateFile(scanner,fileToUpdate, menu);
-                        if(updatedFile != null && !updatedFile.getFileName().equalsIgnoreCase(fileToUpdate.getFileName())){
-                            directory.getDirectoryFiles().get(EFileType.IMAGE).set(index,updatedFile);
+                        AFile updatedFile = directory.updateFile(scanner, fileToUpdate, menu);
+                        if (updatedFile != null && !updatedFile.getFileName().equalsIgnoreCase(fileToUpdate.getFileName())) {
+                            directory.getDirectoryFiles().get(EFileType.IMAGE).set(index, updatedFile);
                             System.out.println("Fisierul a fost actualizat");
                         }
                     }
-                    if(fileToUpdate.getFileExtension() == EFileExtension.WAV || fileToUpdate.getFileExtension() == EFileExtension.MP3){
+                    if (fileToUpdate.getFileExtension() == EFileExtension.WAV || fileToUpdate.getFileExtension() == EFileExtension.MP3) {
                         int index = directory.getDirectoryFiles().get(EFileType.AUDIO).indexOf(fileToUpdate);
-                        AFile updatedFile = directory.updateFile(scanner,fileToUpdate,menu);
-                        if(updatedFile != null && !updatedFile.getFileName().equalsIgnoreCase(fileToUpdate.getFileName())){
-                            directory.getDirectoryFiles().get(EFileType.AUDIO).set(index,updatedFile);
+                        AFile updatedFile = directory.updateFile(scanner, fileToUpdate, menu);
+                        if (updatedFile != null && !updatedFile.getFileName().equalsIgnoreCase(fileToUpdate.getFileName())) {
+                            directory.getDirectoryFiles().get(EFileType.AUDIO).set(index, updatedFile);
                             System.out.println("Fisierul a fost actualizat");
                         }
                     }
 
                     System.out.println("Doriti sa mai actualizati un fisier din director? (DA sau NU)");
                     String choice = scanner.next();
-                    if(choice.equalsIgnoreCase("DA")){
+                    if (choice.equalsIgnoreCase("DA")) {
                         loopCheck = true;
-                    }else if(choice.equalsIgnoreCase("NU")){
+                    } else if (choice.equalsIgnoreCase("NU")) {
                         loopCheck = false;
                     }
-                }while(loopCheck);
+                } while (loopCheck);
 
-            }else{
+            } else {
                 //todo de creat exceptie ca nu exista directorul
             }
         }
     }
 
-    public static int getAllDirectoryFilesNumber(Directory[] directories){
+    public static int getAllDirectoryFilesNumber(Directory[] directories) {
         int count = 0;
-        for(Directory directory: directories){
-            count+=directory.getDirectoryFiles().get(EFileType.IMAGE).size() + directory.getDirectoryFiles().get(EFileType.AUDIO).size();
+        for (Directory directory : directories) {
+            count += directory.getDirectoryFiles().get(EFileType.IMAGE).size() + directory.getDirectoryFiles().get(EFileType.AUDIO).size();
         }
         return count;
     }
 
-    public static void generateFileStatistics(Directory[] directories,EFileType eFileType){
+    public static void generateFileStatistics(Directory[] directories, EFileType eFileType) {
         int allFilesCount = getAllDirectoryFilesNumber(directories);
         int[] imageFilesSizes = new int[allFilesCount];
-        int i=0;
-        for(Directory directory:directories){
-            for(AFile file : directory.getDirectoryFiles().get(EFileType.IMAGE)){
+        int i = 0;
+        for (Directory directory : directories) {
+            for (AFile file : directory.getDirectoryFiles().get(EFileType.IMAGE)) {
                 imageFilesSizes[i++] = file.getFileSize();
             }
         }
@@ -303,22 +296,22 @@ public class Directory implements IDirectoryOperations {
         int sizeOfAllImageFiles = Arrays.stream(imageFilesSizes).sum();
         OptionalInt maxSizeOfImageFiles = Arrays.stream(imageFilesSizes).max();
         OptionalInt minSizeOfImageFiles = Arrays.stream(imageFilesSizes).min();
-        if(averageFileSize.isPresent() && maxSizeOfImageFiles.isPresent() && minSizeOfImageFiles.isPresent()){
+        if (averageFileSize.isPresent() && maxSizeOfImageFiles.isPresent() && minSizeOfImageFiles.isPresent()) {
             System.out.println("----------------------------------------------------------------------------------------");
             System.out.format("%-70s %s", "Descriere", "Valoare\n");
-            System.out.format("%-70s %s","Media dimensiunii fisierelor de tip" + eFileType.name() + " este", averageFileSize.getAsDouble() + "\n");
-            System.out.format("%-70s %s","Suma dimensiunii fisierelor de tip" + eFileType.name() + " este",sizeOfAllImageFiles + "\n");
-            System.out.format("%-70s %s","Maximul dimensiunii fisierelor de tip" + eFileType.name() + " este",maxSizeOfImageFiles.getAsInt() + "\n");
-            System.out.format("%-70s %s","Minimul dimensiunii fisierelor de tip" + eFileType.name() + " este",minSizeOfImageFiles.getAsInt() + "\n");
+            System.out.format("%-70s %s", "Media dimensiunii fisierelor de tip" + eFileType.name() + " este", averageFileSize.getAsDouble() + "\n");
+            System.out.format("%-70s %s", "Suma dimensiunii fisierelor de tip" + eFileType.name() + " este", sizeOfAllImageFiles + "\n");
+            System.out.format("%-70s %s", "Maximul dimensiunii fisierelor de tip" + eFileType.name() + " este", maxSizeOfImageFiles.getAsInt() + "\n");
+            System.out.format("%-70s %s", "Minimul dimensiunii fisierelor de tip" + eFileType.name() + " este", minSizeOfImageFiles.getAsInt() + "\n");
             System.out.println("----------------------------------------------------------------------------------------");
 
-            String fileName = "C:\\Facultate\\MASTER EBUS\\AN1\\SEM1\\PPOO\\PROIECT\\src\\"+ eFileType.name() + "_STATISTICS.txt";
+            String fileName = "C:\\Facultate\\MASTER EBUS\\AN1\\SEM1\\PPOO\\PROIECT\\src\\" + eFileType.name() + "_STATISTICS.txt";
             TextFile file = new TextFile(fileName);
             boolean generated = false;
-            if(file.open()){
-                generated = file.writeStatisticsToFile(averageFileSize.getAsDouble(),sizeOfAllImageFiles,maxSizeOfImageFiles.getAsInt(),minSizeOfImageFiles.getAsInt(),file.fileName,eFileType);
+            if (file.open()) {
+                generated = file.writeStatisticsToFile(averageFileSize.getAsDouble(), sizeOfAllImageFiles, maxSizeOfImageFiles.getAsInt(), minSizeOfImageFiles.getAsInt(), file.fileName, eFileType);
             }
-            if(generated){
+            if (generated) {
                 System.out.println("Statisticile au fost salvate cu succes in fisierul cu numele " + file.fileName);
             }
         }
@@ -326,29 +319,29 @@ public class Directory implements IDirectoryOperations {
     }
 
     @Override
-    public AFile createFile( Scanner scanner) {
+    public AFile createFile(Scanner scanner) {
         AFile file;
         System.out.println("Ce fel de fisier doriti sa creati?");
         System.out.println("Pentru fisier audio introduceti tasta 1. Pentru fisier imagine introduceti tasta 2");
         int option = scanner.nextInt();
-        if(option == 2){
-                System.out.println("Introduceti denumirea fisierului pe care doriti sa il creati");
-                String fileName = scanner.next();
-                System.out.println("Introduceti extensia noului fisier: jpg sau png.");
-                String extension = scanner.next();
-                System.out.println("Introduceti dimensiunea noului fisier");
-                int dimension = scanner.nextInt();
-                System.out.println("Introduceti dimensiunile fisierului imagine:");
-                System.out.println("WIDTH");
-                int width = scanner.nextInt();
-                System.out.println("HEIGHT");
-                int height = scanner.nextInt();
-                if(fileName!= null && extension!=null && dimension != 0 && width != 0 && height != 0 ){
-                    ImageFile imageFile = new ImageFile(fileName,EFileExtension.getExtension(extension),dimension,height,width);
-                    return imageFile;
-                }
+        if (option == 2) {
+            System.out.println("Introduceti denumirea fisierului pe care doriti sa il creati");
+            String fileName = scanner.next();
+            System.out.println("Introduceti extensia noului fisier: jpg sau png.");
+            String extension = scanner.next();
+            System.out.println("Introduceti dimensiunea noului fisier");
+            int dimension = scanner.nextInt();
+            System.out.println("Introduceti dimensiunile fisierului imagine:");
+            System.out.println("WIDTH");
+            int width = scanner.nextInt();
+            System.out.println("HEIGHT");
+            int height = scanner.nextInt();
+            if (fileName != null && extension != null && dimension != 0 && width != 0 && height != 0) {
+                ImageFile imageFile = new ImageFile(fileName, EFileExtension.getExtension(extension), dimension, height, width);
+                return imageFile;
+            }
 
-        }else if(option == 1){
+        } else if (option == 1) {
             System.out.println("Introduceti denumirea fisierului pe care doriti sa il creati");
             String fileName = scanner.next();
             System.out.println("Introduceti extensia noului fisier: wav sau mp3.");
@@ -357,11 +350,11 @@ public class Directory implements IDirectoryOperations {
             int dimension = scanner.nextInt();
             System.out.println("Introduceti durata noului fisier");
             int duration = scanner.nextInt();
-            if(fileName!= null && extension!=null && dimension != 0 && duration !=0){
-                AudioFile audioFile = new AudioFile(fileName,EFileExtension.getExtension(extension),dimension,duration);
+            if (fileName != null && extension != null && dimension != 0 && duration != 0) {
+                AudioFile audioFile = new AudioFile(fileName, EFileExtension.getExtension(extension), dimension, duration);
                 return audioFile;
             }//todo ce se intampla pe else si aici
-        }else{
+        } else {
             System.out.println("Optiunea introdusa nu este corecta");
             //todo de tratat acest caz de exceptie -> eventual o revenire sau o intrebare daca se doreste continuarea
         }
@@ -372,42 +365,39 @@ public class Directory implements IDirectoryOperations {
     public AFile findFile(Scanner scanner, Directory directory) {
         Optional<AFile> file;
         System.out.println("Care este denumirea fisierului pe care doriti sa il stergeti/actualizati?");
-        String fileNameToDelete= scanner.next();
+        String fileNameToDelete = scanner.next();
         System.out.println("Care este extensia acestui fisier? (MP3, WAV, JPG, PNG)");
         String fileExtensionToDelete = scanner.next();
 
-        if (fileExtensionToDelete.equalsIgnoreCase(EFileExtension.JPG.name()) ||
-                fileExtensionToDelete.equalsIgnoreCase(EFileExtension.PNG.name())) {
-          file = directory.getDirectoryFiles().get(EFileType.IMAGE).stream()
-                  .filter(x -> x.getFileName().equalsIgnoreCase(fileNameToDelete) && String.valueOf(x.getFileExtension()).equalsIgnoreCase(fileExtensionToDelete)).findFirst();
-            if(file.isPresent()){
+        if (fileExtensionToDelete.equalsIgnoreCase(EFileExtension.JPG.name()) || fileExtensionToDelete.equalsIgnoreCase(EFileExtension.PNG.name())) {
+            file = directory.getDirectoryFiles().get(EFileType.IMAGE).stream().filter(x -> x.getFileName().equalsIgnoreCase(fileNameToDelete) && String.valueOf(x.getFileExtension()).equalsIgnoreCase(fileExtensionToDelete)).findFirst();
+            if (file.isPresent()) {
                 return file.get();
             }
         }
-        if (fileExtensionToDelete.equalsIgnoreCase(EFileExtension.MP3.name()) ||
-                fileExtensionToDelete.equalsIgnoreCase(EFileExtension.WAV.name())) {
-            file = directory.getDirectoryFiles().get(EFileType.AUDIO).stream()
-                    .filter(x -> x.getFileName().equalsIgnoreCase(fileNameToDelete) && String.valueOf(x.getFileExtension()).equalsIgnoreCase(fileExtensionToDelete)).findFirst();
-            if(file.isPresent()){
+        if (fileExtensionToDelete.equalsIgnoreCase(EFileExtension.MP3.name()) || fileExtensionToDelete.equalsIgnoreCase(EFileExtension.WAV.name())) {
+            file = directory.getDirectoryFiles().get(EFileType.AUDIO).stream().filter(x -> x.getFileName().equalsIgnoreCase(fileNameToDelete) && String.valueOf(x.getFileExtension()).equalsIgnoreCase(fileExtensionToDelete)).findFirst();
+            if (file.isPresent()) {
                 return file.get();
             }
         }
         return null;
+        //todo de rezolvat eroarea de aici
     }
 
     @Override
     public AFile updateFile(Scanner scanner, AFile file, Menu menu) {
         menu.getMenuFileUpdateOperations();
         int option = scanner.nextInt();
-        if(option == EUpdateFileOptions.RENAME_FILE.getId()){
+        if (option == EUpdateFileOptions.RENAME_FILE.getId()) {
             System.out.println("Introduceti noua denumire a fisierului");
             String newName = scanner.next();
             file.setFileName(newName);
         }
-        if(option == EUpdateFileOptions.BACK_TO_MAIN_MENU.getId()){
+        if (option == EUpdateFileOptions.BACK_TO_MAIN_MENU.getId()) {
             return file;
         }
-        return  file;
+        return file;
 //        Menu.getMenuFileUpdateOperations();
 //        int option = scanner.nextInt();
 

@@ -1,10 +1,5 @@
 import Classes.*;
 import CustomExceptions.InvalidCommandException;
-import CustomExceptions.InvalidDirectoryName;
-import CustomExceptions.InvalidDirectorySizeException;
-import Enums.EFileExtension;
-import Enums.EFileOptions;
-import Enums.EFileType;
 import Enums.EMenuOptions;
 
 import java.util.*;
@@ -50,19 +45,17 @@ public class Main {
                             Thread.sleep(2000);
                             menu.getMenuInitialDescription();
                             break;
-
                         case 2:
                             directories = menu.createDirectoryOption(scanner, directories);
-                            //todo optiune pentru populat directorul recent creat
                             menu.getMenuInitialDescription();
                             break;
-
                         case 3:
                             directories = menu.deleteDirectoryOption(scanner,directories);
                             shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                             break;
                         case 4:
                             directories = menu.updateData(scanner,directories,inputOperationTypeValue,menu,shouldContinue);
+                            shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                             break;
                         case 5:
                             Directory.showAllDirectories(directories);

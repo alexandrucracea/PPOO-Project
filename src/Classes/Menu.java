@@ -95,8 +95,16 @@ public class Menu implements IMenuOperations {
         } else {
             if (inputValue.equalsIgnoreCase("NU")) {
                 shouldContinue = false;
+            }else{
+                try {
+                    throw new InvalidCommandException("OPTIUNEA ALEASA NU EXISTA");
+                } catch (InvalidCommandException ex) {
+                    System.err.println(ex);
+                    //todo ce se intampla daca aici tastam o alta optiune
+                }
             }
         }
+
         return shouldContinue;
     }
 
@@ -115,9 +123,6 @@ public class Menu implements IMenuOperations {
                 Directory.countDirectory();
                 System.out.println("Directorul a fost creat cu succes");
             }
-            //todo optiune pentru populat directorul recent creat
-            System.out.println("Doriti sa populati directorul cu fisiere multimedia?");
-
             System.out.println("\nDaca doriti sa reluati operatia, scrieti DA, altfel scrieti NU");
 
         } while (!scanner.next().equalsIgnoreCase("NU"));
@@ -153,6 +158,7 @@ public class Menu implements IMenuOperations {
         inputOperationTypeValue = scanner.nextInt();
 
         if (inputOperationTypeValue == 1) {
+            Directory.showAllDirectories(directories);
             System.out.println("INTRODUCETI DENUMIREA DIRECTORULUI PE CARE DORITI SA IL REDENUMITI");
             String directoryName = scanner.next();
             System.out.println("INTRODUCETI NOUA DENUMIRE A DIRECTORULUI");
@@ -162,8 +168,6 @@ public class Menu implements IMenuOperations {
             } catch (InvalidDirectoryName e) {
                 System.err.println(e);
             }
-//                                Thread.sleep(500);
-            shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
             return directories;
         } else {
             if (inputOperationTypeValue == 2) {
@@ -175,27 +179,22 @@ public class Menu implements IMenuOperations {
                     Directory.showAllDirectories(directories);
                     Directory.populateDirectory(scanner, directories);
                     System.out.println("Fisierul a fost adaugat cu succes");
-                    shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                     return directories;
                 } else if (inputFileOperationValue == EFileOptions.DELETE_FILE.getId()) {
                     Directory.showAllDirectories(directories);
                     Directory.deleteDirectoryContent(scanner, directories);
-                    shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                     return directories;
                 } else if (inputFileOperationValue == EFileOptions.UPDATE_FILE.getId()) {
                     Directory.showAllDirectories(directories);
                     Directory.updateDirectoryContent(scanner, directories, menu);
-                    shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                     return directories;
                 } else if (inputFileOperationValue == EFileOptions.BACK_TO_MAIN_MENU.getId()) {
-                    shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                     return directories;
                 } else {
                     try {
                         throw new InvalidCommandException("OPTIUNEA ALEASA NU EXISTA");
                     } catch (InvalidCommandException ex) {
                         System.err.println(ex);
-                        shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                     }
                 }
             }
