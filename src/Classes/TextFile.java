@@ -98,6 +98,30 @@ public class TextFile {
         }
     }
 
+    public boolean writeStatisticsToFile(double averageFileSize,int sizeOfAllImageFiles, int maxSizeOfImageFiles,int minSizeOfImageFiles, String fileName, EFileType eFileType){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Statisticile generale sunt:\n");
+        stringBuilder.append("Media dimensiunii fisierelor de tip" + eFileType.name() + " este\t");
+        stringBuilder.append(averageFileSize + "\n");
+        stringBuilder.append("Suma dimensiunii fisierelor de tip" + eFileType.name() + " este\t");
+        stringBuilder.append(sizeOfAllImageFiles + "\n");
+        stringBuilder.append("Maximul dimensiunii fisierelor de tip" + eFileType.name() + " este\t");
+        stringBuilder.append(maxSizeOfImageFiles + "\n");
+        stringBuilder.append("Minimul dimensiunii fisierelor de tip" + eFileType.name() + " este\t");
+        stringBuilder.append(minSizeOfImageFiles + "\n");
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+            writer.write(String.valueOf(stringBuilder));
+            writer.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     public boolean DeleteFile(){
        if(myFile.delete()){
            return true;

@@ -68,7 +68,10 @@ public class Main {
                             Directory.showAllDirectories(directories);
                             shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                             break;
-
+                        case 6:
+                            menu.generateStatistics(directories,scanner);
+                            shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
+                            break;
                         default:
                             try {
                                 throw new InvalidCommandException("OPTIUNEA ALEASA NU EXISTA");

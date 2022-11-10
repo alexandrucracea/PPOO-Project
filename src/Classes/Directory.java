@@ -282,24 +282,48 @@ public class Directory implements IDirectoryOperations {
         }
     }
 
-    public static void generateImageFilesStatistics(Directory[] directories){
-//        int[] values = new int[directories];
-//        for(int i=0; i< values.length; i++){
-//            values[i] = directories[i].getDirectoryFiles()
-//        }
-        //todo afisat fisiere cu dimensiunea peste 100 mb
-        //todo afisat fisiere cu dimensiunea intre 50-100 mb
-        //todo de afisat cat ocupa toate
-
-        //todo de gandit cum generam aici
-    }
-    public static void generateAudioFileStatistics(){
-        //todo afisat fisiere cu dimensiunea peste 100 mb
-        //todo afisat fisiere cu dimensiunea intre 50-100 mb
-        //todo de afisat durata totala de ascultare a acestor fisiere
-        //todo de gandit cum generam si aici
+    public static int getAllDirectoryFilesNumber(Directory[] directories){
+        int count = 0;
+        for(Directory directory: directories){
+            count+=directory.getDirectoryFiles().get(EFileType.IMAGE).size() + directory.getDirectoryFiles().get(EFileType.AUDIO).size();
+        }
+        return count;
     }
 
+    public static void generateFileStatistics(Directory[] directories,EFileType eFileType){
+        int allFilesCount = getAllDirectoryFilesNumber(directories);
+        int[] imageFilesSizes = new int[allFilesCount];
+        int i=0;
+        for(Directory directory:directories){
+            for(AFile file : directory.getDirectoryFiles().get(EFileType.IMAGE)){
+                imageFilesSizes[i++] = file.getFileSize();
+            }
+        }
+        OptionalDouble averageFileSize = Arrays.stream(imageFilesSizes).average();
+        int sizeOfAllImageFiles = Arrays.stream(imageFilesSizes).sum();
+        OptionalInt maxSizeOfImageFiles = Arrays.stream(imageFilesSizes).max();
+        OptionalInt minSizeOfImageFiles = Arrays.stream(imageFilesSizes).min();
+        if(averageFileSize.isPresent() && maxSizeOfImageFiles.isPresent() && minSizeOfImageFiles.isPresent()){
+            System.out.println("----------------------------------------------------------------------------------------");
+            System.out.format("%-70s %s", "Descriere", "Valoare\n");
+            System.out.format("%-70s %s","Media dimensiunii fisierelor de tip" + eFileType.name() + " este", averageFileSize.getAsDouble() + "\n");
+            System.out.format("%-70s %s","Suma dimensiunii fisierelor de tip" + eFileType.name() + " este",sizeOfAllImageFiles + "\n");
+            System.out.format("%-70s %s","Maximul dimensiunii fisierelor de tip" + eFileType.name() + " este",maxSizeOfImageFiles.getAsInt() + "\n");
+            System.out.format("%-70s %s","Minimul dimensiunii fisierelor de tip" + eFileType.name() + " este",minSizeOfImageFiles.getAsInt() + "\n");
+            System.out.println("----------------------------------------------------------------------------------------");
+
+            String fileName = "C:\\Facultate\\MASTER EBUS\\AN1\\SEM1\\PPOO\\PROIECT\\src\\"+ eFileType.name() + "_STATISTICS.txt";
+            TextFile file = new TextFile(fileName);
+            boolean generated = false;
+            if(file.open()){
+                generated = file.writeStatisticsToFile(averageFileSize.getAsDouble(),sizeOfAllImageFiles,maxSizeOfImageFiles.getAsInt(),minSizeOfImageFiles.getAsInt(),file.fileName,eFileType);
+            }
+            if(generated){
+                System.out.println("Statisticile au fost salvate cu succes in fisierul cu numele " + file.fileName);
+            }
+        }
+
+    }
 
     @Override
     public AFile createFile( Scanner scanner) {

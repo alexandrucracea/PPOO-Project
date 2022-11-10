@@ -4,6 +4,7 @@ import CustomExceptions.InvalidCommandException;
 import CustomExceptions.InvalidDirectoryName;
 import CustomExceptions.InvalidDirectorySizeException;
 import Enums.EFileOptions;
+import Enums.EFileType;
 import Enums.EMenuOptions;
 import Enums.EUpdateFileOptions;
 import Interfaces.IMenuOperations;
@@ -199,6 +200,18 @@ public class Menu implements IMenuOperations {
                 }
             }
             return directories;
+        }
+    }
+
+    @Override
+    public void generateStatistics(Directory[] directories, Scanner scanner) {
+        System.out.println("Pentru statistici pentru fisiere de tip IMAGINE apasati tasta 1");
+        System.out.println("Pentru statistici pentru fisiere de tip AUDIO apasati tasta 2");
+        int option = scanner.nextInt();
+        if(option == 1){
+            Directory.generateFileStatistics(directories, EFileType.IMAGE);
+        }else if(option == 2){
+            Directory.generateFileStatistics(directories,EFileType.AUDIO);
         }
     }
 
