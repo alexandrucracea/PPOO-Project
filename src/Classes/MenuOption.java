@@ -2,6 +2,7 @@ package Classes;
 
 import Enums.EFileOptions;
 import Enums.EMenuOptions;
+import Enums.EUpdateFileOptions;
 import Interfaces.IMenuOperations;
 
 public class MenuOption implements IMenuOperations {
@@ -13,6 +14,11 @@ public class MenuOption implements IMenuOperations {
         this.optionName = eMenuOptions.getName();
     }
     public MenuOption(EFileOptions eFileOptions) {
+        this.optionId = eFileOptions.getId();
+        this.optionName = eFileOptions.getName();
+    }
+
+    public MenuOption(EUpdateFileOptions eFileOptions) {
         this.optionId = eFileOptions.getId();
         this.optionName = eFileOptions.getName();
     }

@@ -128,7 +128,12 @@ public class Main {
                                         shouldContinue = menu.getRerenderingMenuQuestion(inputValue,scanner);
                                         break;
                                     }else if(inputFileOperationValue == EFileOptions.UPDATE_FILE.getId()){
-
+                                        Directory.updateDirectoryContent(scanner,directories,menu);
+                                        shouldContinue = menu.getRerenderingMenuQuestion(inputValue,scanner);
+                                        break;
+                                    }else if(inputFileOperationValue == EFileOptions.BACK_TO_MAIN_MENU.getId()){
+                                        shouldContinue = menu.getRerenderingMenuQuestion(inputValue,scanner);
+                                        break;
                                     }
                                     else {
                                         try {

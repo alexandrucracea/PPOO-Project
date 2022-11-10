@@ -3,6 +3,7 @@ package Classes;
 import CustomExceptions.InvalidDirectoryName;
 import Enums.EFileExtension;
 import Enums.EFileType;
+import Enums.EUpdateFileOptions;
 import Interfaces.IDirectoryOperations;
 
 import java.util.*;
@@ -213,7 +214,7 @@ public class Directory implements IDirectoryOperations {
                 Directory directory = directoryToCheck.get();
                 boolean loopCheck = false;
                 do{
-                    AFile fileToDelete = directory.findFileToDelete(scanner,directory);
+                    AFile fileToDelete = directory.findFile(scanner,directory);
                     if(fileToDelete.getFileExtension() == EFileExtension.JPG || fileToDelete.getFileExtension() == EFileExtension.PNG){
                         directory.getDirectoryFiles().get(EFileType.IMAGE).remove(fileToDelete);
                     }
@@ -236,6 +237,49 @@ public class Directory implements IDirectoryOperations {
             }
         }
         //todo ce se intampla daca nu avem nimic in directories
+    }
+
+    public static void updateDirectoryContent(Scanner scanner, Directory[] directories, Menu menu){
+        if(directories!=null){
+            System.out.println("Care este numele directorului in care doriti sa modificati fisiere?");
+            String directoryToFind = scanner.next();
+            if (Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))) {
+                Optional<Directory> directoryToCheck = Arrays.stream(directories).filter(x -> x.getPath().equalsIgnoreCase(directoryToFind))
+                        .findFirst();
+                Directory directory = directoryToCheck.get();
+                boolean loopCheck = false;
+                do{
+                    AFile fileToUpdate = directory.findFile(scanner,directory);
+                    if(fileToUpdate.getFileExtension() == EFileExtension.JPG || fileToUpdate.getFileExtension() == EFileExtension.PNG){
+                        int index = directory.getDirectoryFiles().get(EFileType.IMAGE).indexOf(fileToUpdate);
+                        AFile updatedFile = directory.updateFile(scanner,fileToUpdate, menu);
+                        if(updatedFile != null && !updatedFile.getFileName().equalsIgnoreCase(fileToUpdate.getFileName())){
+                            directory.getDirectoryFiles().get(EFileType.IMAGE).set(index,updatedFile);
+                            System.out.println("Fisierul a fost actualizat");
+                        }
+                    }
+                    if(fileToUpdate.getFileExtension() == EFileExtension.WAV || fileToUpdate.getFileExtension() == EFileExtension.MP3){
+                        int index = directory.getDirectoryFiles().get(EFileType.AUDIO).indexOf(fileToUpdate);
+                        AFile updatedFile = directory.updateFile(scanner,fileToUpdate,menu);
+                        if(updatedFile != null && !updatedFile.getFileName().equalsIgnoreCase(fileToUpdate.getFileName())){
+                            directory.getDirectoryFiles().get(EFileType.AUDIO).set(index,updatedFile);
+                            System.out.println("Fisierul a fost actualizat");
+                        }
+                    }
+
+                    System.out.println("Doriti sa mai actualizati un fisier din director? (DA sau NU)");
+                    String choice = scanner.next();
+                    if(choice.equalsIgnoreCase("DA")){
+                        loopCheck = true;
+                    }else if(choice.equalsIgnoreCase("NU")){
+                        loopCheck = false;
+                    }
+                }while(loopCheck);
+
+            }else{
+                //todo de creat exceptie ca nu exista directorul
+            }
+        }
     }
 
     @Override
@@ -282,9 +326,9 @@ public class Directory implements IDirectoryOperations {
     }
 
     @Override
-    public AFile findFileToDelete(Scanner scanner,Directory directory) {
+    public AFile findFile(Scanner scanner, Directory directory) {
         Optional<AFile> file;
-        System.out.println("Care este denumirea fisierului pe care doriti sa il stergeti?");
+        System.out.println("Care este denumirea fisierului pe care doriti sa il stergeti/actualizati?");
         String fileNameToDelete= scanner.next();
         System.out.println("Care este extensia acestui fisier? (MP3, WAV, JPG, PNG)");
         String fileExtensionToDelete = scanner.next();
@@ -309,12 +353,21 @@ public class Directory implements IDirectoryOperations {
     }
 
     @Override
-    public void updateFile(AFile file) {
+    public AFile updateFile(Scanner scanner, AFile file, Menu menu) {
+        menu.getMenuFileUpdateOperations();
+        int option = scanner.nextInt();
+        if(option == EUpdateFileOptions.RENAME_FILE.getId()){
+            System.out.println("Introduceti noua denumire a fisierului");
+            String newName = scanner.next();
+            file.setFileName(newName);
+        }
+        if(option == EUpdateFileOptions.BACK_TO_MAIN_MENU.getId()){
+            return file;
+        }
+        return  file;
+//        Menu.getMenuFileUpdateOperations();
+//        int option = scanner.nextInt();
 
     }
 
-    @Override
-    public void renameFile(AFile file, String newName) {
-
-    }
 }

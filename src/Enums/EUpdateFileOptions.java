@@ -1,15 +1,13 @@
 package Enums;
 
-public enum EFileOptions {
-    CREATE_FILE(1, "CREATI UN FISIER"),
-    DELETE_FILE(2, "STERGETI UN FISIER"),
-    UPDATE_FILE(3, "ACTUALIZATI UN FISIER"),
-    BACK_TO_MAIN_MENU(4,"REVENITI LA MENIUL PRINCIPAL");
+public enum EUpdateFileOptions {
+    RENAME_FILE(1,"REDENUMITI UN FISIER"),
+    BACK_TO_MAIN_MENU(2,"INAPOI LA MENIUL ANTERIOR");
 
     private int id;
     private String name;
 
-    EFileOptions(int id, String name) {
+    EUpdateFileOptions(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -24,7 +22,7 @@ public enum EFileOptions {
 
     public static int getNoOfOptions(){
         int counter = 0;
-        for(EFileOptions eMenuOptions: values()){
+        for(EUpdateFileOptions eMenuOptions: values()){
             counter++;
         }
         return counter;

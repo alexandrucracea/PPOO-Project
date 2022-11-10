@@ -2,6 +2,7 @@ package Classes;
 
 import Enums.EFileOptions;
 import Enums.EMenuOptions;
+import Enums.EUpdateFileOptions;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -49,6 +50,24 @@ public class Menu {
         for(EFileOptions eFileOptions: EFileOptions.values()){
             MenuOption fileOperation = new MenuOption(eFileOptions);
             fileOptions[fileOptCounter++] = fileOperation;
+        }
+
+        System.out.println("Va rugam sa alegeti optiunile corespunzatoare operatiilor pe care doriti sa le efectuati");
+        System.out.println("----------------------------------------------------------------------------------------");
+        System.out.format("%-70s %s", "Descriere","Tasta\n");
+        for(MenuOption fileOption : fileOptions){
+            System.out.format("%-72s %s",fileOption.getOptionName(),fileOption.getOptionId() + "\n");
+        }
+        System.out.println("----------------------------------------------------------------------------------------");
+        System.out.println("Alegeti tasta corespunzatoare optiunii pe care o doriti:");
+    }
+
+    public void getMenuFileUpdateOperations(){
+        MenuOption[] fileOptions = new MenuOption[EUpdateFileOptions.getNoOfOptions()];
+        int fileOptCounter = 0;
+        for(EUpdateFileOptions eUpdateFileOptions: EUpdateFileOptions.values()){
+            MenuOption updateFileOperation = new MenuOption(eUpdateFileOptions);
+            fileOptions[fileOptCounter++] = updateFileOperation;
         }
 
         System.out.println("Va rugam sa alegeti optiunile corespunzatoare operatiilor pe care doriti sa le efectuati");
