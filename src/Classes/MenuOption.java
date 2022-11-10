@@ -5,7 +5,7 @@ import Enums.EMenuOptions;
 import Enums.EUpdateFileOptions;
 import Interfaces.IMenuOperations;
 
-public class MenuOption implements IMenuOperations {
+public class MenuOption {
     public int optionId;
     public String optionName;
 
@@ -29,21 +29,6 @@ public class MenuOption implements IMenuOperations {
 
     public String getOptionName() {
         return optionName;
-    }
-
-    @Override
-    public void createDirectoryOption() {
-
-    }
-
-    @Override
-    public void saveData() {
-
-    }
-
-    @Override
-    public void restoreData() {
-
     }
 
     @Override

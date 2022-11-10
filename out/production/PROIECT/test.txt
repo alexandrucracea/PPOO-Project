@@ -1,6 +1,5 @@
 Director1;
 ceva2.mp3,12,60;
-ceva1.JPG,12,100,200;
 /
 Director2;
 ceva2.mp3,12,60;
