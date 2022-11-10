@@ -19,6 +19,8 @@ public class Directory implements IDirectoryOperations {
     public Directory(String path) {
         this.path = path;
         this.directoryFiles = new HashMap<>();
+        directoryFiles.put(EFileType.IMAGE,new LinkedList<>());
+        directoryFiles.put(EFileType.AUDIO,new LinkedList<>());
     }
 
     public Directory(String path, HashMap<EFileType, LinkedList<AFile>> directoryFiles) {
@@ -125,7 +127,7 @@ public class Directory implements IDirectoryOperations {
 
     public static Directory[] DeleteDirectory(String path, Directory[] directories) {
         //get index in directories array
-        int indexToDelete = 0;
+        int indexToDelete = -1;
         for (int i = 0; i < directories.length; i++) {
             if (directories[i].getPath().equalsIgnoreCase(path)) {
                 indexToDelete = i;
@@ -159,6 +161,7 @@ public class Directory implements IDirectoryOperations {
     }
 
     public static void showAllDirectories(Directory[] directories) {
+        System.out.println("Directoarele existente sunt:");
         for (Directory directory : directories) {
             System.out.println("Directory " + directory.getPath() + " data");
             directory.getDirectoryFiles().forEach((key, value) -> System.out.println(key + " files: " + value));
@@ -176,7 +179,7 @@ public class Directory implements IDirectoryOperations {
                 do {
                     AFile fileToAdd = directory.createFile(scanner);
                     if (String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.JPG.name()) || String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.PNG.name())) {
-                        directory.getDirectoryFiles().get(EFileType.IMAGE).add(fileToAdd);
+                        directory.getDirectoryFiles().get(EFileType.IMAGE).add(fileToAdd); //todo ce se intampla cand nu am nimic, cum adaug?
                     }
                     if (String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.MP3.name()) || String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.WAV.name())) {
                         directory.getDirectoryFiles().get(EFileType.AUDIO).add(fileToAdd);
@@ -199,12 +202,12 @@ public class Directory implements IDirectoryOperations {
 
     public static void deleteDirectoryContent(Scanner scanner, Directory[] directories) {
         if (directories != null) {
+            boolean loopCheck = false;
             System.out.println("Care este numele directorului in care doriti sa eliminati fisiere?");
             String directoryToFind = scanner.next();
             if (Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))) {
                 Optional<Directory> directoryToCheck = Arrays.stream(directories).filter(x -> x.getPath().equalsIgnoreCase(directoryToFind)).findFirst();
                 Directory directory = directoryToCheck.get();
-                boolean loopCheck = false;
                 do {
                     AFile fileToDelete = directory.findFile(scanner, directory);
                     if (fileToDelete != null) {
@@ -215,6 +218,15 @@ public class Directory implements IDirectoryOperations {
                             directory.getDirectoryFiles().get(EFileType.AUDIO).remove(fileToDelete);
                         }
                         System.out.println("Fisierul a fost eliminat");
+                        System.out.println("Doriti sa mai stergeti un fisier din director? (DA sau NU)");
+                        String choice = scanner.next();
+                        if (choice.equalsIgnoreCase("DA")) {
+                            loopCheck = true;
+                        } else if (choice.equalsIgnoreCase("NU")) {
+                            loopCheck = false;
+                        }
+                    }else{
+                        System.out.println("Fisierul cautat nu exista");
                         System.out.println("Doriti sa mai stergeti un fisier din director? (DA sau NU)");
                         String choice = scanner.next();
                         if (choice.equalsIgnoreCase("DA")) {

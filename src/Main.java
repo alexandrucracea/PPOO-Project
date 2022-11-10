@@ -18,8 +18,6 @@ public class Main {
 
             Directory[] directories = Directory.getAllDirectoryData(fileContent, EXTENSION_SIZE);
 
-            //TODO pentru statistici de utilizat doi vectori de tipuri fundamentale
-
 //            Menu area
             Menu menu = new Menu();
             Scanner scanner = new Scanner(System.in);

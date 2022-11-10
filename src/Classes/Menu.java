@@ -173,8 +173,6 @@ public class Menu implements IMenuOperations {
             if (inputOperationTypeValue == 2) {
                 menu.getMenuFileOperations();
                 int inputFileOperationValue = scanner.nextInt();
-                System.out.println("Directoarele existente sunt:");
-                System.out.println("");
                 if (inputFileOperationValue == EFileOptions.CREATE_FILE.getId()) {
                     Directory.showAllDirectories(directories);
                     Directory.populateDirectory(scanner, directories);
@@ -213,6 +211,5 @@ public class Menu implements IMenuOperations {
             Directory.generateFileStatistics(directories,EFileType.AUDIO);
         }
     }
-
 
 }
