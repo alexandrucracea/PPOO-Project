@@ -5,7 +5,6 @@ import Enums.EFileExtension;
 import Enums.EFileType;
 import Interfaces.IDirectoryOperations;
 
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class Directory implements IDirectoryOperations {
@@ -169,10 +168,74 @@ public class Directory implements IDirectoryOperations {
         }
     }
 
+    public static void populateDirectory(Scanner scanner, Directory[] directories) {
+        if(directories!=null){
+            System.out.println("Care este numele directorului in care doriti sa creati fisierul?");
+            String directoryToFind = scanner.next();
+            if (Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))) {
+                Optional<Directory> directoryToCheck = Arrays.stream(directories).filter(x -> x.getPath().equalsIgnoreCase(directoryToFind))
+                        .findFirst();
+                Directory directory = directoryToCheck.get();
+                boolean loopCheck = false;
+                do{
+                    AFile fileToAdd = directory.createFile(scanner);
+                    if (String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.JPG.name()) ||
+                            String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.PNG.name())) {
+                        directory.getDirectoryFiles().get(EFileType.IMAGE).add(fileToAdd);
+                    }
+                    if (String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.MP3.name()) ||
+                            String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.WAV.name())) {
+                        directory.getDirectoryFiles().get(EFileType.IMAGE).add(fileToAdd);
+                    }
+                    System.out.println("Doriti sa mai adaugati un fisier in director? (DA sau NU)");
+                    String choice = scanner.next();
+                    if(choice.equalsIgnoreCase("DA")){
+                        loopCheck = true;
+                    }else if(choice.equalsIgnoreCase("NU")){
+                        loopCheck = false;
+                    }
+                }while(loopCheck );
 
-    @Override
-    public void populateDirectory(String directoryData) {
+            }else{
+                //todo de creat exceptie ca nu exista directorul
+            }
+        }
+       //todo ce se intampla daca nu avem nimic in directories
+    }
 
+    public static void deleteDirectoryContent(Scanner scanner, Directory[] directories){
+        if(directories!=null){
+            System.out.println("Care este numele directorului in care doriti sa eliminati fisiere?");
+            String directoryToFind = scanner.next();
+            if (Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))) {
+                Optional<Directory> directoryToCheck = Arrays.stream(directories).filter(x -> x.getPath().equalsIgnoreCase(directoryToFind))
+                        .findFirst();
+                Directory directory = directoryToCheck.get();
+                boolean loopCheck = false;
+                do{
+                    AFile fileToDelete = directory.findFileToDelete(scanner,directory);
+                    if(fileToDelete.getFileExtension() == EFileExtension.JPG || fileToDelete.getFileExtension() == EFileExtension.PNG){
+                        directory.getDirectoryFiles().get(EFileType.IMAGE).remove(fileToDelete);
+                    }
+                    if(fileToDelete.getFileExtension() == EFileExtension.WAV || fileToDelete.getFileExtension() == EFileExtension.MP3){
+                        directory.getDirectoryFiles().get(EFileType.AUDIO).remove(fileToDelete);
+                    }
+                    //todo ce se intampla cand nu mai avem fisiere de sters
+                    System.out.println("Fisierul a fost eliminat");
+                    System.out.println("Doriti sa mai stergeti un fisier din director? (DA sau NU)");
+                    String choice = scanner.next();
+                    if(choice.equalsIgnoreCase("DA")){
+                        loopCheck = true;
+                    }else if(choice.equalsIgnoreCase("NU")){
+                        loopCheck = false;
+                    }
+                }while(loopCheck);
+
+            }else{
+                //todo de creat exceptie ca nu exista directorul
+            }
+        }
+        //todo ce se intampla daca nu avem nimic in directories
     }
 
     @Override
@@ -180,23 +243,25 @@ public class Directory implements IDirectoryOperations {
         AFile file;
         System.out.println("Ce fel de fisier doriti sa creati?");
         System.out.println("Pentru fisier audio introduceti tasta 1. Pentru fisier imagine introduceti tasta 2");
-        if(scanner.nextInt() == 1){
-            System.out.println("Introduceti denumirea fisierului pe care doriti sa il creati");
-            String fileName = scanner.next();
-            System.out.println("Introduceti extensia noului fisier: jpg sau png.");
-            String extension = scanner.next();
-            System.out.println("Introduceti dimensiunea noului fisier");
-            int dimension = scanner.nextInt();
-            System.out.println("Introduceti dimensiunile fisierului imagine:");
-            System.out.println("WIDTH");
-            int width = scanner.nextInt();
-            System.out.println("HEIGHT");
-            int height = scanner.nextInt();
-            if(fileName!= null && extension!=null && dimension != 0 && width != 0 && height != 0 ){
-                ImageFile imageFile = new ImageFile(fileName,EFileExtension.getExtension(extension),dimension,height,width);
-                return imageFile;
-            }//todo ce se intampla pe else
-        }else if(scanner.nextInt() == 2){
+        int option = scanner.nextInt();
+        if(option == 2){
+                System.out.println("Introduceti denumirea fisierului pe care doriti sa il creati");
+                String fileName = scanner.next();
+                System.out.println("Introduceti extensia noului fisier: jpg sau png.");
+                String extension = scanner.next();
+                System.out.println("Introduceti dimensiunea noului fisier");
+                int dimension = scanner.nextInt();
+                System.out.println("Introduceti dimensiunile fisierului imagine:");
+                System.out.println("WIDTH");
+                int width = scanner.nextInt();
+                System.out.println("HEIGHT");
+                int height = scanner.nextInt();
+                if(fileName!= null && extension!=null && dimension != 0 && width != 0 && height != 0 ){
+                    ImageFile imageFile = new ImageFile(fileName,EFileExtension.getExtension(extension),dimension,height,width);
+                    return imageFile;
+                }
+
+        }else if(option == 1){
             System.out.println("Introduceti denumirea fisierului pe care doriti sa il creati");
             String fileName = scanner.next();
             System.out.println("Introduceti extensia noului fisier: wav sau mp3.");
@@ -217,8 +282,30 @@ public class Directory implements IDirectoryOperations {
     }
 
     @Override
-    public void deleteFile(AFile file) {
+    public AFile findFileToDelete(Scanner scanner,Directory directory) {
+        Optional<AFile> file;
+        System.out.println("Care este denumirea fisierului pe care doriti sa il stergeti?");
+        String fileNameToDelete= scanner.next();
+        System.out.println("Care este extensia acestui fisier? (MP3, WAV, JPG, PNG)");
+        String fileExtensionToDelete = scanner.next();
 
+        if (fileExtensionToDelete.equalsIgnoreCase(EFileExtension.JPG.name()) ||
+                fileExtensionToDelete.equalsIgnoreCase(EFileExtension.PNG.name())) {
+          file = directory.getDirectoryFiles().get(EFileType.IMAGE).stream()
+                  .filter(x -> x.getFileName().equalsIgnoreCase(fileNameToDelete) && String.valueOf(x.getFileExtension()).equalsIgnoreCase(fileExtensionToDelete)).findFirst();
+            if(file.isPresent()){
+                return file.get();
+            }
+        }
+        if (fileExtensionToDelete.equalsIgnoreCase(EFileExtension.MP3.name()) ||
+                fileExtensionToDelete.equalsIgnoreCase(EFileExtension.WAV.name())) {
+            file = directory.getDirectoryFiles().get(EFileType.AUDIO).stream()
+                    .filter(x -> x.getFileName().equalsIgnoreCase(fileNameToDelete) && String.valueOf(x.getFileExtension()).equalsIgnoreCase(fileExtensionToDelete)).findFirst();
+            if(file.isPresent()){
+                return file.get();
+            }
+        }
+        return null;
     }
 
     @Override

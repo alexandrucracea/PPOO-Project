@@ -83,7 +83,7 @@ public class Main {
                                     throw new InvalidDirectorySizeException("Nu exista niciun director pentru a putea fi efectuata stergerea");
                             } catch (InvalidDirectorySizeException ex) {
                                 System.err.println(ex);
-                            shouldContinue = menu.getRerenderingMenuQuestion(inputValue,scanner);
+                                shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                             }
                             //todo de adaugat asta in loc de metoda de exista
                             if (Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))) {
@@ -112,32 +112,34 @@ public class Main {
                                     System.err.println(e);
                                 }
 //                                Thread.sleep(500);
-                                shouldContinue = menu.getRerenderingMenuQuestion(inputValue,scanner);
+                                shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                             } else {
                                 if (inputOperationTypeValue == 2) {
                                     menu.getMenuFileOperations();
                                     int inputFileOperationValue = scanner.nextInt();
-                                    if(inputFileOperationValue == EFileOptions.CREATE_FILE.getId()){
-                                        System.out.println("Care este numele directorului in care doriti sa creati fisierul?");
-                                        directoryToFind = scanner.next();
-                                        if(Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))){
-                                            Optional<Directory> directoryToCheck = Arrays.stream(directories).filter(x -> x.getPath().equalsIgnoreCase(directoryToFind))
-                                                    .findFirst();
-                                            if(directoryToCheck.isPresent()){
-                                                Directory directory = directoryToCheck.get();
-                                                AFile fileToAdd = directory.createFile(scanner);
-                                                if(String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.JPG.name()) ||
-                                                        String.valueOf(fileToAdd.getFileExtension()).equalsIgnoreCase(EFileExtension.PNG.name())){
-                                                   //todo cazul daca exista deja in fisier date sau daca nu
-                                                }
-                                            }
+                                    if (inputFileOperationValue == EFileOptions.CREATE_FILE.getId()) {
+                                        Directory.populateDirectory(scanner, directories);
+                                        System.out.println("Fisierul a fost adaugat cu succes");
+                                        shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
+                                        break;
+                                    }
+                                    else if(inputFileOperationValue == EFileOptions.DELETE_FILE.getId()){
+                                        Directory.deleteDirectoryContent(scanner,directories);
+                                        shouldContinue = menu.getRerenderingMenuQuestion(inputValue,scanner);
+                                        break;
+                                    }else if(inputFileOperationValue == EFileOptions.UPDATE_FILE.getId()){
 
-                                        }else{
-                                            //todo aici tratare de exceptie
+                                    }
+                                    else {
+                                        try {
+                                            throw new InvalidCommandException("OPTIUNEA ALEASA NU EXISTA");
+                                        } catch (InvalidCommandException ex) {
+                                            System.err.println(ex);
+                                            shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                                         }
                                     }
-                                    break;
                                 }
+                                break;
                             }
                         case 5:
                             Directory.showAllDirectories(directories);

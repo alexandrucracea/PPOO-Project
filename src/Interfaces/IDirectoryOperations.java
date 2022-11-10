@@ -6,9 +6,8 @@ import Classes.Directory;
 import java.util.Scanner;
 
 public interface IDirectoryOperations {
-    public void populateDirectory(String directoryData);
     public AFile createFile( Scanner scanner);
-    public void deleteFile(AFile file);
+    public AFile findFileToDelete(Scanner scanner, Directory directory);
     public void updateFile(AFile file);
     public void renameFile(AFile file, String newName);
 

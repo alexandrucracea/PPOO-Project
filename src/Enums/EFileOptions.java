@@ -1,9 +1,9 @@
 package Enums;
 
 public enum EFileOptions {
-    CREATE_FILE(8, "CREATI UN FISIER"),
-    DELETE_FILE(9, "STERGETI UN FISIER"),
-    UPDATE_FILE(10, "ACTUALIZATI UN FISIER");
+    CREATE_FILE(1, "CREATI UN FISIER"),
+    DELETE_FILE(2, "STERGETI UN FISIER"),
+    UPDATE_FILE(3, "ACTUALIZATI UN FISIER");
 
     private int id;
     private String name;
