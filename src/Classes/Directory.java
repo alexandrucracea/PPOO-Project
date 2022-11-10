@@ -282,6 +282,25 @@ public class Directory implements IDirectoryOperations {
         }
     }
 
+    public static void generateImageFilesStatistics(Directory[] directories){
+//        int[] values = new int[directories];
+//        for(int i=0; i< values.length; i++){
+//            values[i] = directories[i].getDirectoryFiles()
+//        }
+        //todo afisat fisiere cu dimensiunea peste 100 mb
+        //todo afisat fisiere cu dimensiunea intre 50-100 mb
+        //todo de afisat cat ocupa toate
+
+        //todo de gandit cum generam aici
+    }
+    public static void generateAudioFileStatistics(){
+        //todo afisat fisiere cu dimensiunea peste 100 mb
+        //todo afisat fisiere cu dimensiunea intre 50-100 mb
+        //todo de afisat durata totala de ascultare a acestor fisiere
+        //todo de gandit cum generam si aici
+    }
+
+
     @Override
     public AFile createFile( Scanner scanner) {
         AFile file;

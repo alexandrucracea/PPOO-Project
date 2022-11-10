@@ -33,6 +33,7 @@ public class Menu {
                 "menuOperations=" + Arrays.toString(menuOperations) +
                 '}';
     }
+
     public void getMenuInitialDescription(){
         System.out.println("Va rugam sa alegeti optiunile corespunzatoare operatiilor pe care doriti sa le efectuati");
         System.out.println("----------------------------------------------------------------------------------------");

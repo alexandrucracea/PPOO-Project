@@ -23,7 +23,6 @@ public class Main {
 
             Directory[] directories = Directory.getAllDirectoryData(fileContent, EXTENSION_SIZE);
 
-            //TODO realizarea de operatii CRUD cu salvare in memorie (de modificat acel hashmap)
             //TODO pentru statistici de utilizat doi vectori de tipuri fundamentale
 
 //            Menu area
@@ -85,7 +84,6 @@ public class Main {
                                 System.err.println(ex);
                                 shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                             }
-                            //todo de adaugat asta in loc de metoda de exista
                             if (Arrays.stream(directories).anyMatch(x -> x.getPath().equalsIgnoreCase(directoryToFind))) {
                                 directories = Directory.DeleteDirectory(directoryToFind, directories);
                                 System.out.println("Eliminarea a fost finalizata");
