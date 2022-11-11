@@ -2,6 +2,11 @@ package Classes;
 
 import Enums.EFileExtension;
 
+/***
+ * <h1>Audio File Class</h1>
+ * <p>This class extends AFile abstract class defining audio files</p>
+ */
+
 public class AudioFile extends AFile{
     private int duration;
 

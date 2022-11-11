@@ -62,11 +62,10 @@ public class Menu implements IMenuOperations {
     }
 
     /***
-     * <h1>MAIN MENU DISPLAY</h1>
+     * <h1>CRUD MEDIA FILE OPTIONS</h1>
      * <p>This method is used to display the media file update options</p>
      *
-     * @param: none
-     * @author: A.Cracea
+     * @author A.Cracea
      */
     public void getMenuFileOperations() {
         MenuOption[] fileOptions = new MenuOption[EFileOptions.getNoOfOptions()];
@@ -86,6 +85,12 @@ public class Menu implements IMenuOperations {
         System.out.println("Alegeti tasta corespunzatoare optiunii pe care o doriti:");
     }
 
+    /***
+     * <h1>MORE SPECIFIC UPDATE MEDIA FILE OPTIONS</h1>
+     * <p>This method is used to display more specific media file update options</p>
+     *
+     * @author A.Cracea
+     */
     public void getMenuFileUpdateOperations() {
         MenuOption[] fileOptions = new MenuOption[EUpdateFileOptions.getNoOfOptions()];
         int fileOptCounter = 0;
@@ -104,6 +109,16 @@ public class Menu implements IMenuOperations {
         System.out.println("Alegeti tasta corespunzatoare optiunii pe care o doriti:");
     }
 
+
+    /***
+     * <h1>Shall the user continue? YES or NO</h1>
+     * <p>This method is used to ask the user if he wants to continue running the app</p>
+     *
+     * @param scanner
+     * @param inputValue
+     * @return boolean
+     * @author A.Cracea
+     */
     public boolean getRerenderingMenuQuestion(String inputValue, Scanner scanner) {
         System.out.println("\nDaca doriti sa accesati meniul principal scrieti DA. Pentru a inchide aplicatia scrieti NU");
         inputValue = scanner.next();
@@ -126,6 +141,16 @@ public class Menu implements IMenuOperations {
         return shouldContinue;
     }
 
+
+    /***
+     * <h1>CREATE DIRECTORY FUNCTION</h1>
+     * <p>Used for creating a new directory</p>
+     *
+     * @param scanner
+     * @param directories
+     * @return Directory[]
+     * @author A.Cracea
+     */
     @Override
     public Directory[] createDirectoryOption(Scanner scanner, Directory[] directories) {
         do {
@@ -147,6 +172,15 @@ public class Menu implements IMenuOperations {
         return directories;
     }
 
+    /***
+     * <h1>DELETE DIRECTORY FUNCTION</h1>
+     * <p>Used for deleting a directory</p>
+     *
+     * @param scanner
+     * @param directories
+     * * @return Directory[]
+     * @author A.Cracea
+     */
     @Override
     public Directory[] deleteDirectoryOption(Scanner scanner, Directory[] directories) {
         System.out.println("\nDirectoarele existente sunt:");
@@ -169,6 +203,18 @@ public class Menu implements IMenuOperations {
         return directories;
     }
 
+    /***
+     * <h1>UPDATE data</h1>
+     * <p>Used for updating either a directory or its files</p>
+     *
+     * @param scanner
+     * @param directories
+     * @param inputOperationTypeValue
+     * @param menu
+     * @param shouldContinue
+     * @return Directory[]
+     * @author A.Cracea
+     */
     @Override
     public Directory[] updateData(Scanner scanner, Directory[] directories, int inputOperationTypeValue, Menu menu, boolean shouldContinue) {
         String inputValue = "";
@@ -225,6 +271,14 @@ public class Menu implements IMenuOperations {
         }
     }
 
+    /***
+     * <h1>UPDATE data</h1>
+     * <p>Used for generating general purpose statistics</p>
+     *
+     * @param scanner
+     * @param directories
+     * @author A.Cracea
+     */
     @Override
     public void generateStatistics(Directory[] directories, Scanner scanner) {
         System.out.println("Pentru statistici pentru fisiere de tip IMAGINE apasati tasta 1");

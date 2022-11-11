@@ -7,7 +7,8 @@ import java.util.LinkedList;
 import java.util.Map;
 
 /**
- * <h1>Java class responsible of manipulating Text Files</h1>
+ * <h1>Text File Class</h1>
+ * <p>This class models a Text File, making working with text files easier</p>
  */
 
 
@@ -37,6 +38,10 @@ public class TextFile {
         }
     }
 
+    /***
+     * <h1>Method used to read from a text file</h1>
+     * @return String
+     */
     public String readLine(){
         try{
             String line;
@@ -57,6 +62,13 @@ public class TextFile {
         return null;
     }
 
+    /***
+     * <h1>Method used to write to a textfile</h1>
+     * <p>This method writes a collection of Directory objects into a text file</p>
+     *
+     * @param allDirectoriesInfo
+     * @param fileName
+     */
     public void writeToFile(Directory[] allDirectoriesInfo, String fileName){
         StringBuilder stringBuilder = new StringBuilder();
         for (Directory directory: allDirectoriesInfo){
@@ -98,6 +110,19 @@ public class TextFile {
         }
     }
 
+    /***
+     * <h1>Generate statistics</h1>
+     * <p>Method used for generating statistics for a certain file type</p>
+     *
+     * @param averageFileSize
+     * @param sizeOfAllImageFiles
+     * @param maxSizeOfImageFiles
+     * @param minSizeOfImageFiles
+     * @param fileName
+     * @param eFileType
+     * @return boolean
+     */
+
     public boolean writeStatisticsToFile(double averageFileSize,int sizeOfAllImageFiles, int maxSizeOfImageFiles,int minSizeOfImageFiles, String fileName, EFileType eFileType){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Statisticile generale sunt:\n");
@@ -122,6 +147,12 @@ public class TextFile {
         return false;
     }
 
+    /***
+     * <h1>Delete a Text File</h1>
+     * <p>Method used to delete a text file</p>
+     *
+     * @return true if the file was deleted, otherwise it returns false
+     */
     public boolean DeleteFile(){
        if(myFile.delete()){
            return true;

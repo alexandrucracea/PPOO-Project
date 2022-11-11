@@ -4,6 +4,10 @@ import Enums.EFileOptions;
 import Enums.EMenuOptions;
 import Enums.EUpdateFileOptions;
 
+/***
+ * <h1>Class that models a different menu options</h1>
+ */
+
 public class MenuOption {
     public int optionId;
     public String optionName;

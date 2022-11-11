@@ -8,8 +8,8 @@ import Enums.EFileExtension;
  * Aceasta are rolul de a oferi atribute si metode claselor ce o vor mosteni.
  *
  *
- * @version : 1.0
- * @author: A.Cracea
+ * @version  1.0
+ * @author A.Cracea
  */
 public abstract class AFile {
     private String fileName;

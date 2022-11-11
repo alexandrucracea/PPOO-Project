@@ -8,6 +8,10 @@ import Interfaces.IDirectoryOperations;
 
 import java.util.*;
 
+/***
+ * <h1>Directory Class</h1>
+ * <p>This class models how a directory should look like and how it should behave</p>
+ */
 public class Directory implements IDirectoryOperations {
     private String path;
     private HashMap<EFileType, LinkedList<AFile>> directoryFiles;
@@ -113,6 +117,13 @@ public class Directory implements IDirectoryOperations {
         return directories;
     }
 
+    /***
+     * <h1>Create Directory</h1>
+     * <p>Used for creating a directory</p>
+     *
+     * @param scanner
+     * @return Directory object
+     */
     public static Directory createDirectory(Scanner scanner) {
         System.out.println("Va rugam introduceti calea/denumirea directorului pe care doriti sa il creati");
         String directoryPath = scanner.next();
@@ -125,6 +136,14 @@ public class Directory implements IDirectoryOperations {
         return null;
     }
 
+    /***
+     * <h1>Delete directory</h1>
+     * <p>This method is used for deleting a directory</p>
+     *
+     * @param path
+     * @param directories
+     * @return an array of directories
+     */
     public static Directory[] DeleteDirectory(String path, Directory[] directories) {
         //get index in directories array
         int indexToDelete = -1;
@@ -139,6 +158,14 @@ public class Directory implements IDirectoryOperations {
         return directoriesToReturn;
     }
 
+    /***
+     * <h1>Update Directory and Media Files</h1>
+     * <p>This method is used for handling update uperations for either directory or its media files</p>
+     * @param directories
+     * @param directoryName
+     * @param directoryNewName
+     * @throws InvalidDirectoryName
+     */
     public static void updateDirectoryName(Directory[] directories, String directoryName, String directoryNewName) throws InvalidDirectoryName {
         if (checkIfDirectoryExists(directoryName, directories)) {
             for (Directory directory : directories) {
@@ -152,6 +179,13 @@ public class Directory implements IDirectoryOperations {
 
     }
 
+    /***
+     * <h1>Does this directory exists?</h1>
+     * <p>It checks if a directory exists or not in a given array</p>
+     * @param directoryName
+     * @param directories
+     * @return boolean
+     */
     public static boolean checkIfDirectoryExists(String directoryName, Directory[] directories) {
         boolean exists = false;
         for (Directory directory : directories) {
@@ -160,6 +194,10 @@ public class Directory implements IDirectoryOperations {
         return exists;
     }
 
+    /***
+     * <h1>Show all directories method</h1>
+     * @param directories
+     */
     public static void showAllDirectories(Directory[] directories) {
         System.out.println("Directoarele existente sunt:");
         for (Directory directory : directories) {
@@ -168,6 +206,12 @@ public class Directory implements IDirectoryOperations {
         }
     }
 
+    /***
+     * <h1>Build a directory</h1>
+     * <p>This method builds a directory and adds it to a given array</p>
+     * @param scanner
+     * @param directories
+     */
     public static void populateDirectory(Scanner scanner, Directory[] directories) {
         if (directories != null) {
             System.out.println("Care este numele directorului in care doriti sa creati fisierul?");
@@ -200,6 +244,12 @@ public class Directory implements IDirectoryOperations {
         //todo ce se intampla daca nu avem nimic in directories
     }
 
+    /***
+     * <h1>Delete directory content</h1>
+     * <p>This method deletes directory's content</p>
+     * @param scanner
+     * @param directories
+     */
     public static void deleteDirectoryContent(Scanner scanner, Directory[] directories) {
         if (directories != null) {
             boolean loopCheck = false;
@@ -245,6 +295,13 @@ public class Directory implements IDirectoryOperations {
         //todo ce se intampla daca nu avem nimic in directories
     }
 
+    /***
+     * <h1>Update directory content</h1>
+     * <p>Update content for a given directory object</p>
+     * @param scanner
+     * @param directories
+     * @param menu
+     */
     public static void updateDirectoryContent(Scanner scanner, Directory[] directories, Menu menu) {
         if (directories != null) {
             System.out.println("Care este numele directorului in care doriti sa modificati fisiere?");
@@ -298,6 +355,13 @@ public class Directory implements IDirectoryOperations {
         return count;
     }
 
+    /***
+     * <h1>Generate statistics</h1>
+     * <p>This method is responsible for generating statistics for certain file types</p>
+     *
+     * @param directories
+     * @param eFileType
+     */
     public static void generateFileStatistics(Directory[] directories, EFileType eFileType) {
         int allFilesCount = getAllDirectoryFilesNumber(directories);
         int[] imageFilesSizes = new int[allFilesCount];
@@ -333,6 +397,13 @@ public class Directory implements IDirectoryOperations {
 
     }
 
+    /***
+     * <h1>Create a Media File</h1>
+     * <p>This method creates a media file</p>
+     *
+     * @param scanner
+     * @return AFile
+     */
     @Override
     public AFile createFile(Scanner scanner) {
         AFile file;
@@ -376,6 +447,14 @@ public class Directory implements IDirectoryOperations {
         return null;
     }
 
+    /***
+     * <h1>Find media file</h1>
+     * <p>This method searches for a file in a certain directory</p>
+     *
+     * @param scanner
+     * @param directory
+     * @return AFile
+     */
     @Override
     public AFile findFile(Scanner scanner, Directory directory) {
         Optional<AFile> file;

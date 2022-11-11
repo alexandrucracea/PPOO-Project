@@ -2,8 +2,11 @@ package Classes;
 
 import Enums.EFileExtension;
 
+/***
+ * <h1>Image File Class</h1>
+ * <p>This class extends AFile abstract class and models an image file</p>
+ */
 public class ImageFile extends AFile{
-    private static final String resolutionMeasurment = "pixels";
     private int height;
     private int width;
 
@@ -41,7 +44,4 @@ public class ImageFile extends AFile{
                 "} " + super.toString();
     }
 
-    //todo de adaugat in toString si constanta
-    //todo de regandit daca adaugam un measurment unit la AFIle si ii dam o alta valoare in functie de clasa
-    //todo de creat interfetele + gandit operatiile din acestea
 }
