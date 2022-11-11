@@ -53,6 +53,7 @@ public class Main {
                             break;
                         case 4:
                             directories = menu.updateData(scanner,directories,inputOperationTypeValue,menu,shouldContinue);
+                            Thread.sleep(500);
                             shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                             break;
                         case 5:
@@ -68,6 +69,7 @@ public class Main {
                                 throw new InvalidCommandException("OPTIUNEA ALEASA NU EXISTA");
                             } catch (InvalidCommandException ex) {
                                 System.err.println(ex);
+                                Thread.sleep(500);
                                 shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                             }
                     }

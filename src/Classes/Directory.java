@@ -194,7 +194,7 @@ public class Directory implements IDirectoryOperations {
                 } while (loopCheck);
 
             } else {
-                //todo de creat exceptie ca nu exista directorul
+                System.out.println("Directorul cautat nu exista");
             }
         }
         //todo ce se intampla daca nu avem nimic in directories
@@ -255,23 +255,26 @@ public class Directory implements IDirectoryOperations {
                 boolean loopCheck = false;
                 do {
                     AFile fileToUpdate = directory.findFile(scanner, directory);
-                    if (fileToUpdate.getFileExtension() == EFileExtension.JPG || fileToUpdate.getFileExtension() == EFileExtension.PNG) {
-                        int index = directory.getDirectoryFiles().get(EFileType.IMAGE).indexOf(fileToUpdate);
-                        AFile updatedFile = directory.updateFile(scanner, fileToUpdate, menu);
-                        if (updatedFile != null && !updatedFile.getFileName().equalsIgnoreCase(fileToUpdate.getFileName())) {
-                            directory.getDirectoryFiles().get(EFileType.IMAGE).set(index, updatedFile);
-                            System.out.println("Fisierul a fost actualizat");
+                    if(fileToUpdate!=null){
+                        if (fileToUpdate.getFileExtension() == EFileExtension.JPG || fileToUpdate.getFileExtension() == EFileExtension.PNG) {
+                            int index = directory.getDirectoryFiles().get(EFileType.IMAGE).indexOf(fileToUpdate);
+                            AFile updatedFile = directory.updateFile(scanner, fileToUpdate, menu);
+                            if (updatedFile != null && !updatedFile.getFileName().equalsIgnoreCase(fileToUpdate.getFileName())) {
+                                directory.getDirectoryFiles().get(EFileType.IMAGE).set(index, updatedFile);
+                                System.out.println("Fisierul a fost actualizat");
+                            }
                         }
-                    }
-                    if (fileToUpdate.getFileExtension() == EFileExtension.WAV || fileToUpdate.getFileExtension() == EFileExtension.MP3) {
-                        int index = directory.getDirectoryFiles().get(EFileType.AUDIO).indexOf(fileToUpdate);
-                        AFile updatedFile = directory.updateFile(scanner, fileToUpdate, menu);
-                        if (updatedFile != null && !updatedFile.getFileName().equalsIgnoreCase(fileToUpdate.getFileName())) {
-                            directory.getDirectoryFiles().get(EFileType.AUDIO).set(index, updatedFile);
-                            System.out.println("Fisierul a fost actualizat");
+                        if (fileToUpdate.getFileExtension() == EFileExtension.WAV || fileToUpdate.getFileExtension() == EFileExtension.MP3) {
+                            int index = directory.getDirectoryFiles().get(EFileType.AUDIO).indexOf(fileToUpdate);
+                            AFile updatedFile = directory.updateFile(scanner, fileToUpdate, menu);
+                            if (updatedFile != null && !updatedFile.getFileName().equalsIgnoreCase(fileToUpdate.getFileName())) {
+                                directory.getDirectoryFiles().get(EFileType.AUDIO).set(index, updatedFile);
+                                System.out.println("Fisierul a fost actualizat");
+                            }
                         }
+                    }else{
+                        System.out.println("Fisierul cautat nu se afla in acest director/nu exista");
                     }
-
                     System.out.println("Doriti sa mai actualizati un fisier din director? (DA sau NU)");
                     String choice = scanner.next();
                     if (choice.equalsIgnoreCase("DA")) {
@@ -282,7 +285,7 @@ public class Directory implements IDirectoryOperations {
                 } while (loopCheck);
 
             } else {
-                //todo de creat exceptie ca nu exista directorul
+                System.out.println("Directorul cautat nu exista");
             }
         }
     }

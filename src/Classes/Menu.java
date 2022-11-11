@@ -12,6 +12,10 @@ import Interfaces.IMenuOperations;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * <h1>Java class responsible of application main menu</h1>
+ */
+
 public class Menu implements IMenuOperations {
     private MenuOption[] menuOperations;
     private static int counter = 0;
@@ -39,6 +43,13 @@ public class Menu implements IMenuOperations {
                 '}';
     }
 
+    /***
+     * <h1>MAIN MENU DISPLAY</h1>
+     * <p>This method is used to display the main menu options</p>
+     *
+     * @param: none
+     * @author: A.Cracea
+     */
     public void getMenuInitialDescription() {
         System.out.println("Va rugam sa alegeti optiunile corespunzatoare operatiilor pe care doriti sa le efectuati");
         System.out.println("----------------------------------------------------------------------------------------");
@@ -50,6 +61,13 @@ public class Menu implements IMenuOperations {
         System.out.println("Alegeti tasta corespunzatoare optiunii pe care o doriti:");
     }
 
+    /***
+     * <h1>MAIN MENU DISPLAY</h1>
+     * <p>This method is used to display the media file update options</p>
+     *
+     * @param: none
+     * @author: A.Cracea
+     */
     public void getMenuFileOperations() {
         MenuOption[] fileOptions = new MenuOption[EFileOptions.getNoOfOptions()];
         int fileOptCounter = 0;
