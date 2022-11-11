@@ -149,7 +149,9 @@ public class Menu implements IMenuOperations {
 
     @Override
     public Directory[] deleteDirectoryOption(Scanner scanner, Directory[] directories) {
-        System.out.println("INTRODUCETI DENUMIREA DIRECTORULUI PE CARE DORITI SA IL STERGETI");
+        System.out.println("\nDirectoarele existente sunt:");
+        Arrays.stream(directories).forEach(x -> System.out.println(x.getPath()));
+        System.out.println("\nINTRODUCETI DENUMIREA DIRECTORULUI PE CARE DORITI SA IL STERGETI");
         String directoryToFind = scanner.next();
         try {
             if (directories.length == 0)
@@ -174,7 +176,6 @@ public class Menu implements IMenuOperations {
         System.out.println("Pentru redenumirea directorului tastati 1");
         System.out.println("Pentru operatii de gestiune a fisierelor dintr-un anumit director apasati 2");
         inputOperationTypeValue = scanner.nextInt();
-
         if (inputOperationTypeValue == 1) {
             Directory.showAllDirectories(directories);
             System.out.println("INTRODUCETI DENUMIREA DIRECTORULUI PE CARE DORITI SA IL REDENUMITI");
@@ -212,6 +213,12 @@ public class Menu implements IMenuOperations {
                     } catch (InvalidCommandException ex) {
                         System.err.println(ex);
                     }
+                }
+            }else{
+                try{
+                    throw new InvalidCommandException("OPTIUNEA ALEASA NU EXISTA");
+                } catch (InvalidCommandException e) {
+                    System.err.println(e);
                 }
             }
             return directories;

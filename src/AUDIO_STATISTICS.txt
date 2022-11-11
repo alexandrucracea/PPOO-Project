@@ -1,5 +1,5 @@
 Statisticile generale sunt:
-Media dimensiunii fisierelor de tipAUDIO este	3.0
-Suma dimensiunii fisierelor de tipAUDIO este	12
+Media dimensiunii fisierelor de tipAUDIO este	4.0
+Suma dimensiunii fisierelor de tipAUDIO este	24
 Maximul dimensiunii fisierelor de tipAUDIO este	12
 Minimul dimensiunii fisierelor de tipAUDIO este	0

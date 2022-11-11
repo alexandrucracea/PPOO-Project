@@ -9,6 +9,7 @@ public class Main {
 
         final int EXTENSION_SIZE = 3;
         final String appFilePath = "C:\\Facultate\\MASTER EBUS\\AN1\\SEM1\\PPOO\\PROIECT\\src\\test.txt";
+        final EMenuOptions eMenuOptions;
 
 //        Source text file manipulation======================================================================================
         TextFile file = new TextFile(appFilePath);
@@ -32,10 +33,11 @@ public class Main {
                 }
             }
             menu.getMenuInitialDescription();
-            int optionId = scanner.nextInt();
+            int optionId = -1;
             boolean shouldContinue = true;
             while (optionId != closingId) {
                 try {
+                    optionId = scanner.nextInt();
                     switch (optionId) {
                         case 1:
                             file.writeToFile(directories, "ceva.txt");
@@ -48,11 +50,11 @@ public class Main {
                             menu.getMenuInitialDescription();
                             break;
                         case 3:
-                            directories = menu.deleteDirectoryOption(scanner,directories);
+                            directories = menu.deleteDirectoryOption(scanner, directories);
                             shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                             break;
                         case 4:
-                            directories = menu.updateData(scanner,directories,inputOperationTypeValue,menu,shouldContinue);
+                            directories = menu.updateData(scanner, directories, inputOperationTypeValue, menu, shouldContinue);
                             Thread.sleep(500);
                             shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                             break;
@@ -61,8 +63,11 @@ public class Main {
                             shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
                             break;
                         case 6:
-                            menu.generateStatistics(directories,scanner);
+                            menu.generateStatistics(directories, scanner);
                             shouldContinue = menu.getRerenderingMenuQuestion(inputValue, scanner);
+                            break;
+                        case 7:
+                            shouldContinue = false;
                             break;
                         default:
                             try {
@@ -75,19 +80,23 @@ public class Main {
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                }catch (InputMismatchException err) {
+                    System.err.println(err);
+                    shouldContinue= menu.getRerenderingMenuQuestion(inputValue,scanner);
                 }
-                if (!shouldContinue) {
-                    break;
-                }
-                optionId = scanner.nextInt();
+            if (!shouldContinue) {
+                break;
             }
-
-            if (file.DeleteFile()) {
-                file.writeToFile(directories, appFilePath);
-                System.out.println("Aplicatia a fost inchisa cu succes, iar datele au fost salvate");
-            }
-        } else {
-            System.out.println("Fisierul nu a putut fi deschis");
         }
+
+        if (file.DeleteFile()) {
+            file.writeToFile(directories, appFilePath);
+            System.out.println("Aplicatia a fost inchisa cu succes, iar datele au fost salvate");
+        }
+    } else
+
+    {
+        System.out.println("Fisierul nu a putut fi deschis");
     }
+}
 }
